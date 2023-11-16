@@ -34,18 +34,31 @@ a:active {
   gap: 20px;
 }
 
+input,
+button {
+  cursor: pointer;
+}
+
 input[type="range"] {
   accent-color: #f04b4c;
   background-color: #72c3ef;
+}
+
+input[type="color"] {
+  transform: translateX(100%);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
 }
 
 .grid {
   width: 350px;
   height: 350px;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(5, 1fr);
   background-color: #ffffff;
+  border: 1px solid black;
 }
 
 .item {
@@ -58,6 +71,20 @@ button {
   padding: 10px 30px;
   background-color: #f04b4c;
   border-radius: 5px;
+}
+
+.clear:active {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.active {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+button:hover {
+  transform: scale(110%);
 }
 
 @media (min-width: 1000px) {
