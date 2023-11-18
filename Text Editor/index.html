@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="./style.css" />
+    <script defer src="./script.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <section class="app">
+      <section class="app--arrows">
+        <button id="undo"><i class="fa-solid fa-arrow-rotate-left"></i></button>
+        <button id="redo">
+          <i class="fa-solid fa-arrow-rotate-right"></i>
+        </button>
+      </section>
+      <div class="menu">
+        <div class="buttons">
+          <section class="font-wrapper">
+            Font
+            <section class="font">
+              <div class="font-type">
+                <select name="fontName" id="fontName">
+                  <option value="arial">Arial</option>
+                  <option value="verdana">Verdana</option>
+                  <option value="times-new-roman">Times New Roman</option>
+                  <option value="garamond">Garamond</option>
+                  <option value="georgia">Georgia</option>
+                  <option value="courier-new">Courier New</option>
+                  <option value="cursive">Cursive</option>
+                </select>
+                <select name="fontSize" id="fontSize">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+                <select name="titleSize" id="titleSize">
+                  <option value="H1">H1</option>
+                  <option value="H2">H2</option>
+                  <option value="H3">H3</option>
+                  <option value="H4">H4</option>
+                  <option value="H5">H5</option>
+                </select>
+              </div>
+              <div class="font-modification">
+                <button id="bold" class="option-button format">
+                  <i class="fa-solid fa-bold"></i>
+                </button>
+                <button id="italic" class="option-button script">
+                  <i class="fa-solid fa-italic"></i>
+                </button>
+                <button id="italic" class="option-button script">
+                  <i class="fa-solid fa-underline"></i>
+                </button>
+                <button id="superscript" class="option-button script">
+                  <i class="fa-solid fa-superscript"></i>
+                </button>
+                <button id="subscript" class="option-button script">
+                  <i class="fa-solid fa-subscript"></i>
+                </button>
+                <div>
+                  <input type="color" name="fontColor" id="fontColor" />
+                </div>
+              </div>
+            </section>
+          </section>
+          <div class="paragraph-wrapper">
+            Paragraph
+            <section class="paragraph">
+              <div>
+                <button id="insertOrderedList" class="option-button">
+                  <div class="fa-solid fa-list-ol"></div>
+                </button>
+                <button id="insertUnorderedList" class="option-button">
+                  <i class="fa-solid fa-list"></i>
+                </button>
+                <button id="justifyLeft" class="option-button align">
+                  <i class="fa-solid fa-align-left"></i>
+                </button>
+                <button id="justifyCenter" class="option-button align">
+                  <i class="fa-solid fa-align-center"></i>
+                </button>
+              </div>
+              <div>
+                <button id="justifyRight" class="option-button align">
+                  <i class="fa-solid fa-align-right"></i>
+                </button>
+                <button id="justifyFull" class="option-button align">
+                  <i class="fa-solid fa-align-justify"></i>
+                </button>
+                <button id="indent" class="option-button spacing">
+                  <i class="fa-solid fa-indent"></i>
+                </button>
+                <button id="outdent" class="option-button spacing">
+                  <i class="fa-solid fa-outdent"></i>
+                </button>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+      <section class="text" contenteditable="true"></section>
+    </section>
+  </body>
+</html>
