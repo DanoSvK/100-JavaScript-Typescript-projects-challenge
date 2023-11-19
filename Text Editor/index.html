@@ -40,30 +40,37 @@
                   <option value="3">3</option>
                   <option value="4">4</option>
                   <option value="5">5</option>
-                </select>
-                <select name="titleSize" id="titleSize">
-                  <option value="H1">H1</option>
-                  <option value="H2">H2</option>
-                  <option value="H3">H3</option>
-                  <option value="H4">H4</option>
-                  <option value="H5">H5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
                 </select>
               </div>
               <div class="font-modification">
-                <button id="bold" class="option-button format">
+                <button data-cmd="bold" class="option-button format">
                   <i class="fa-solid fa-bold"></i>
                 </button>
-                <button id="italic" class="option-button script">
+                <button data-cmd="italic" class="option-button format">
                   <i class="fa-solid fa-italic"></i>
                 </button>
-                <button id="italic" class="option-button script">
+                <button data-cmd="underline" class="option-button format">
                   <i class="fa-solid fa-underline"></i>
                 </button>
-                <button id="superscript" class="option-button script">
+                <button data-cmd="superscript" class="option-button script">
                   <i class="fa-solid fa-superscript"></i>
                 </button>
-                <button id="subscript" class="option-button script">
+                <button data-cmd="subscript" class="option-button script">
                   <i class="fa-solid fa-subscript"></i>
+                </button>
+                <button data-cmd="insertImage" class="option-button script">
+                  <i class="fa-solid fa-image"></i>
+                </button>
+                <button data-cmd="createLink" class="option-button script">
+                  <i class="fa-solid fa-link"></i>
+                </button>
+                <button data-cmd="showCode" class="option-button align">
+                  <i class="fa-solid fa-code"></i>
                 </button>
                 <div>
                   <input type="color" name="fontColor" id="fontColor" />
@@ -75,30 +82,30 @@
             Paragraph
             <section class="paragraph">
               <div>
-                <button id="insertOrderedList" class="option-button">
+                <button data-cmd="insertOrderedList" class="option-button">
                   <div class="fa-solid fa-list-ol"></div>
                 </button>
-                <button id="insertUnorderedList" class="option-button">
+                <button data-cmd="insertUnorderedList" class="option-button">
                   <i class="fa-solid fa-list"></i>
                 </button>
-                <button id="justifyLeft" class="option-button align">
+                <button data-cmd="justifyLeft" class="option-button align">
                   <i class="fa-solid fa-align-left"></i>
                 </button>
-                <button id="justifyCenter" class="option-button align">
+                <button data-cmd="justifyCenter" class="option-button align">
                   <i class="fa-solid fa-align-center"></i>
                 </button>
               </div>
               <div>
-                <button id="justifyRight" class="option-button align">
+                <button data-cmd="justifyRight" class="option-button align">
                   <i class="fa-solid fa-align-right"></i>
                 </button>
-                <button id="justifyFull" class="option-button align">
+                <button data-cmd="justifyFull" class="option-button align">
                   <i class="fa-solid fa-align-justify"></i>
                 </button>
-                <button id="indent" class="option-button spacing">
+                <button data-cmd="indent" class="option-button spacing">
                   <i class="fa-solid fa-indent"></i>
                 </button>
-                <button id="outdent" class="option-button spacing">
+                <button data-cmd="outdent" class="option-button spacing">
                   <i class="fa-solid fa-outdent"></i>
                 </button>
               </div>
@@ -106,7 +113,7 @@
           </div>
         </div>
       </div>
-      <section class="text" contenteditable="true"></section>
+      <iframe class="text" name="textField"></iframe>
     </section>
   </body>
 </html>
