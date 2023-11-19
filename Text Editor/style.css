@@ -20,7 +20,7 @@ body {
   width: 90vmin;
   height: 80vh;
   padding: 25px;
-  background-color: #ffffff;
+  background-color: #e6e6e6;
   position: relative;
   border-radius: 10px;
 }
@@ -80,13 +80,30 @@ select {
   appearance: none;
   background-color: transparent;
 }
-
+.text {
+  background-color: #ffffff;
+}
+.option-button {
+  padding: 0px;
+  background-color: #e6e6e6;
+}
+.option-button:hover {
+  filter: brightness(0.8);
+}
+.option-button:active {
+  background-color: #b1b1b1;
+}
 input[type="color"] {
   border-radius: 50%;
   background: none;
   border: none;
 }
-
+.fa-solid {
+  padding: 5px 5px;
+}
+.active {
+  background-color: #c6c6c6;
+}
 @media (min-width: 560px) {
   .font,
   .paragraph {
