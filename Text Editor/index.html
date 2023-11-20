@@ -14,15 +14,17 @@
   <body>
     <section class="app">
       <section class="app--arrows">
-        <button id="undo"><i class="fa-solid fa-arrow-rotate-left"></i></button>
-        <button id="redo">
+        <button id="undo" class="option-button">
+          <i class="fa-solid fa-arrow-rotate-left"></i>
+        </button>
+        <button id="redo" class="option-button">
           <i class="fa-solid fa-arrow-rotate-right"></i>
         </button>
       </section>
       <div class="menu">
         <div class="buttons">
-          <section class="font-wrapper">
-            Font
+          <section class="font-wrapper wrapper">
+            <p>Font</p>
             <section class="font">
               <div class="font-type">
                 <select name="fontName" id="fontName">
@@ -63,10 +65,10 @@
                 <button data-cmd="subscript" class="option-button script">
                   <i class="fa-solid fa-subscript"></i>
                 </button>
-                <button data-cmd="insertImage" class="option-button script">
+                <button data-cmd="insertImage" class="option-button">
                   <i class="fa-solid fa-image"></i>
                 </button>
-                <button data-cmd="createLink" class="option-button script">
+                <button data-cmd="createLink" class="option-button">
                   <i class="fa-solid fa-link"></i>
                 </button>
                 <button data-cmd="showCode" class="option-button align">
@@ -78,8 +80,8 @@
               </div>
             </section>
           </section>
-          <div class="paragraph-wrapper">
-            Paragraph
+          <section class="paragraph-wrapper wrapper">
+            <p>Paragraph</p>
             <section class="paragraph">
               <div>
                 <button data-cmd="insertOrderedList" class="option-button">
@@ -110,7 +112,7 @@
                 </button>
               </div>
             </section>
-          </div>
+          </section>
         </div>
       </div>
       <iframe class="text" name="textField"></iframe>
