@@ -26,9 +26,8 @@ body {
 }
 
 .app--arrows {
-  position: absolute;
-  top: 5px;
-  left: 5px;
+  display: flex;
+  justify-content: start;
 }
 
 button {
@@ -51,16 +50,27 @@ button {
 
 .font,
 .paragraph {
-  opacity: 0;
+  visibility: hidden;
   margin-top: 10px;
   margin-bottom: 10px;
   border: 1px solid #000000;
   padding: 10px 10px;
   border-radius: 5px;
 }
-
+.mobile-active {
+  visibility: visible;
+}
+.paragraph-wrapper p,
+.font-wrapper p {
+  width: 100%;
+  background-color: #d2d2d2;
+  margin: 0;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
 .font {
   position: absolute;
+  gap: 5px;
 }
 
 .font-modification {
@@ -75,10 +85,9 @@ select {
   cursor: pointer;
 }
 
-.paragraph-wrapper {
-  text-align: right;
-  appearance: none;
-  background-color: transparent;
+.paragraph-wrapper,
+.font-wrapper {
+  text-align: center;
 }
 .text {
   background-color: #ffffff;
@@ -107,7 +116,7 @@ input[type="color"] {
 @media (min-width: 560px) {
   .font,
   .paragraph {
-    opacity: 1;
+    visibility: visible;
     border: none;
   }
 }
