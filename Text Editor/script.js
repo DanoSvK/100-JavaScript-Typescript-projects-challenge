@@ -4,8 +4,37 @@ const scriptButtons = document.querySelectorAll(".script");
 const alignButtons = document.querySelectorAll(".align");
 const spacingButtons = document.querySelectorAll(".spacing");
 const formatButtons = document.querySelectorAll(".format");
+const fontButton = document.getElementById("fontName");
+const fontSizeButton = document.getElementById("fontSize");
+const fontColorButton = document.getElementById("fontColor");
+const undoButton = document.getElementById("undo");
+const redoButton = document.getElementById("redo");
+const fontWrapper = document.querySelector(".font");
+const paragraphWrapper = document.querySelector(".paragraph");
+
+document.querySelector(".font-wrapper").addEventListener("click", () => {
+  paragraphWrapper.classList.remove("mobile-active");
+  fontWrapper.classList.add("mobile-active");
+});
+
+document.querySelector(".paragraph-wrapper").addEventListener("click", () => {
+  fontWrapper.classList.remove("mobile-active");
+  paragraphWrapper.classList.add("mobile-active");
+});
+
+text.addEventListener("load", function () {
+  // This function will be executed when the iframe content has finished loading
+  var iframeWindow = text.contentWindow;
+
+  // Attach your event listener to the window object of the iframe
+  iframeWindow.addEventListener("click", function (event) {
+    fontWrapper.classList.remove("mobile-active");
+    paragraphWrapper.classList.remove("mobile-active");
+  });
+});
 
 let show = false;
+textField.document.body.style.wordWrap = "break-word";
 textField.document.designMode = "on";
 buttons.forEach((button) => {
   button.addEventListener("click", function () {
@@ -59,17 +88,25 @@ highlighter(spacingButtons, true);
 highlighter(formatButtons, false);
 highlighter(scriptButtons, true);
 
-document.querySelector("#fontName").addEventListener("change", (e) => {
+fontButton.addEventListener("change", (e) => {
   let font = e.target.value;
-  textField.document.execCommand("fontName", false, font);
+  textField.document.execCommand(fontButton.id, false, font);
 });
 
-document.querySelector("#fontSize").addEventListener("change", (e) => {
+fontSizeButton.addEventListener("change", (e) => {
   let size = e.target.value;
-  textField.document.execCommand("fontSize", false, size);
+  textField.document.execCommand(fontSizeButton.id, false, size);
 });
 
-document.querySelector("#fontColor").addEventListener("change", (e) => {
+fontColorButton.addEventListener("change", (e) => {
   let color = e.target.value;
-  textField.document.execCommand("foreColor", false, color);
+  textField.document.execCommand(fontColorButton.id, false, color);
+});
+
+undoButton.addEventListener("click", () => {
+  textField.document.execCommand(undoButton.id, false, null);
+});
+
+redoButton.addEventListener("click", () => {
+  textField.document.execCommand(redoButton.id, false, null);
 });
