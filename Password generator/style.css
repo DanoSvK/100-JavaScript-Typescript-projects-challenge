@@ -1,0 +1,109 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+p,
+h1 {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #0d1137;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 90vh;
+}
+
+.app {
+  background-color: #e52165;
+  color: #0d1137;
+  padding: 30px;
+}
+
+hr {
+  width: auto;
+  margin-left: -30px;
+  margin-right: -30px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border-color: #0d1137;
+}
+
+.pass-display {
+  width: 100%;
+  height: 30px;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.clipboard {
+  appearance: none;
+  border: none;
+  background: none;
+}
+
+.pass-display__text {
+  padding: 1px 6px;
+}
+
+.pass-strength {
+  width: 100%;
+  background-color: #0d1137;
+  height: 5px;
+  border-radius: 5px;
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
+
+.pass-len-wrapper {
+  margin-bottom: 20px;
+}
+
+.pass-len-labels {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.pass-len-input {
+  width: 100%;
+  appearance: none;
+  height: 4px;
+  border-radius: 5px;
+  background-color: #0d1137;
+}
+
+.settings p {
+  margin-bottom: 10px;
+}
+
+.options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.generate-pass-btn-wrapper {
+  width: 100%;
+  background-color: #0d1137;
+  padding: 13px 30px;
+  text-align: center;
+  margin-top: 15px;
+  border-radius: 5px;
+}
+
+.generate-pass-btn {
+  appearance: none;
+  border: none;
+  background: none;
+  color: #ffffff;
+}
