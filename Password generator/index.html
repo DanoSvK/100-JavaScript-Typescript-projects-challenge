@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="./style.css" />
+    <script defer src="./script.js"></script>
+    <title>Password generator</title>
+  </head>
+  <body>
+    <section class="app">
+      <h1>Password generator</h1>
+      <hr />
+      <section class="pass-display">
+        <p class="pass-display__text">s</p>
+        <button class="clipboard"><i class="fa-solid fa-copy"></i></button>
+      </section>
+      <div class="pass-strength"></div>
+      <div class="pass-len-wrapper">
+        <div class="pass-len-labels">
+          <label for="pass-len">Password length</label>
+          <p class="pass-counter">15</p>
+        </div>
+        <input
+          type="range"
+          class="pass-len-input"
+          name="pass-len"
+          id="pass-len"
+          min="8"
+          max="30"
+        />
+      </div>
+      <div class="settings">
+        <p>Password settings</p>
+        <div class="options">
+          <div class="option">
+            <input
+              type="checkbox"
+              class="option-check"
+              name="lowercase"
+              id="lowercase"
+            />
+            <label for="lowercase">Lowercase (a-z)</label>
+          </div>
+          <div class="option">
+            <input
+              type="checkbox"
+              class="option-check"
+              name="uppercase"
+              id="uppercase"
+            />
+            <label for="uppercase">Uppercase (A-Z)</label>
+          </div>
+          <div class="option">
+            <input
+              type="checkbox"
+              class="option-check"
+              name="numbers"
+              id="numbers"
+            />
+            <label for="numbers">Numbers (0-9)</label>
+          </div>
+          <div class="option">
+            <input
+              type="checkbox"
+              class="option-check"
+              name="symbols"
+              id="symbols"
+            />
+            <label for="symbols">Symbols (!-$^+)</label>
+          </div>
+          <div class="option">
+            <input
+              type="checkbox"
+              class="option-check"
+              name="no-duplicates"
+              id="no-duplicates"
+            />
+            <label for="no-duplicates">Exclude duplicates</label>
+          </div>
+          <div class="option">
+            <input
+              type="checkbox"
+              class="option-check"
+              name="spaces"
+              id="spaces"
+            />
+            <label for="spaces">Include spaces</label>
+          </div>
+        </div>
+      </div>
+      <div class="generate-pass-btn-wrapper">
+        <button class="generate-pass-btn">GENERATE PASSWORD</button>
+      </div>
+    </section>
+  </body>
+</html>
