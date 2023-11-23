@@ -24,7 +24,7 @@
       <h1>Password generator</h1>
       <hr />
       <section class="pass-display">
-        <p class="pass-display__text">s</p>
+        <input type="text" class="pass-display__text" disabled></input>
         <button class="clipboard"><i class="fa-solid fa-copy"></i></button>
       </section>
       <div class="pass-strength"></div>
@@ -48,16 +48,18 @@
           <div class="option">
             <input
               type="checkbox"
-              class="option-check"
+              class="option-check lowercase-check"
               name="lowercase"
               id="lowercase"
+              disabled
+              checked="true"
             />
             <label for="lowercase">Lowercase (a-z)</label>
           </div>
           <div class="option">
             <input
               type="checkbox"
-              class="option-check"
+              class="option-check uppercase-check"
               name="uppercase"
               id="uppercase"
             />
@@ -66,7 +68,7 @@
           <div class="option">
             <input
               type="checkbox"
-              class="option-check"
+              class="option-check digits-check"
               name="numbers"
               id="numbers"
             />
@@ -75,7 +77,7 @@
           <div class="option">
             <input
               type="checkbox"
-              class="option-check"
+              class="option-check symbols-check"
               name="symbols"
               id="symbols"
             />
@@ -93,7 +95,7 @@
           <div class="option">
             <input
               type="checkbox"
-              class="option-check"
+              class="option-check spaces-check"
               name="spaces"
               id="spaces"
             />
