@@ -21,6 +21,10 @@
   <body>
     <section class="app">
       <p class="copy-check">Copied to clipboard</p>
+      <div class="error-message">
+      <p>Cannot generate more than 26 unique lowercase letters. Select more options or lower the password length.</p>
+      <i class="fa-solid fa-square-xmark close"></i>
+    </div>
       <h1>Password generator</h1>
       <hr />
       <section class="pass-display">
@@ -86,7 +90,7 @@
           <div class="option">
             <input
               type="checkbox"
-              class="option-check"
+              class="option-check exclude-duplicates-check"
               name="no-duplicates"
               id="no-duplicates"
             />
