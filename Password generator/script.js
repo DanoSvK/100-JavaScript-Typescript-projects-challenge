@@ -3,7 +3,8 @@ const displayText = document.querySelector(".pass-display__text");
 const lengthPass = document.querySelector(".pass-len-input");
 const passLengthCounter = document.querySelector(".pass-counter");
 const copyCheck = document.querySelector(".copy-check");
-
+const closeBtn = document.querySelector(".close");
+const errorMessage = document.querySelector(".error-message");
 // Password length counter
 passLengthCounter.textContent = lengthPass.value;
 
@@ -17,6 +18,7 @@ let fnArg = {
   digits: false,
   symbols: false,
   spaces: false,
+  excludeDuplicates: false,
 };
 
 // Clipboard API
@@ -29,6 +31,10 @@ document.querySelector(".clipboard").addEventListener("click", () => {
   }, 2000);
 });
 
+closeBtn.addEventListener("click", () => {
+  errorMessage.style.opacity = 0;
+});
+
 // Main pass generating function
 const generatePass = (options) => {
   // Object with all possible characters
@@ -36,7 +42,7 @@ const generatePass = (options) => {
     uppercase: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
     lowercase: "abcdefghijklmnopqrstuvwxyz",
     digits: "0123456789",
-    symbols: "!-$^+",
+    symbols: "!$%&|[](){}:;.,*+-#@<>~",
     spaces: " ",
   };
 
@@ -46,10 +52,27 @@ const generatePass = (options) => {
 
   displayText.value = "";
 
-  // Randomly selecting and concatenating the cahracters to form a random password
+  // Randomly selecting and concatenating the characters to form a random password
   for (i = 0; i < lengthPass.value; i++) {
     let n = Math.floor(Math.random() * allChar.length);
-    displayText.value += allChar[n];
+    if (!fnArg.excludeDuplicates) {
+      displayText.value += allChar[n];
+    } else if (fnArg.excludeDuplicates) {
+      if (
+        lengthPass.value > 26 &&
+        !fnArg.uppercase &&
+        !fnArg.digits &&
+        !fnArg.symbols &&
+        !fnArg.spaces
+      ) {
+        errorMessage.style.opacity = 1;
+        displayText.value = "Error!";
+        break;
+      }
+      !displayText.value.includes(allChar[n])
+        ? (displayText.value += allChar[n])
+        : i--;
+    }
   }
 };
 
@@ -80,6 +103,14 @@ document.querySelector(".spaces-check").addEventListener("change", () => {
   fnArg.spaces = document.querySelector(".spaces-check").checked;
 });
 
+document
+  .querySelector(".exclude-duplicates-check")
+  .addEventListener("change", () => {
+    fnArg.excludeDuplicates = document.querySelector(
+      ".exclude-duplicates-check"
+    ).checked;
+    console.log(fnArg.excludeDuplicates);
+  });
 mainBtn.addEventListener("click", () => {
   generatePass(fnArg);
 });
