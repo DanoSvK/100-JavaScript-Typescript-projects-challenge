@@ -10,23 +10,43 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-    <script src="./script.js"></script>
+    <script defer src="./script.js"></script>
     <title>QR Code Generator</title>
   </head>
   <body>
     <section class="app">
       <div class="settings">
-        <input type="color" name="color-white" id="color-white" />
+        <input
+          type="color"
+          name="color-white"
+          id="color-white"
+          value="#ffffff"
+        />
         <input type="color" name="color-black" id="color-black" />
-        <select name="size" id="size"></select>
+        <select class="sizes" name="sizes" id="sizes">
+          <option value="100">100×100</option>
+          <option value="200">200×200</option>
+          <option value="300">300×300</option>
+          <option selected value="400">400×400</option>
+          <option value="500">500×500</option>
+        </select>
       </div>
-      <input type="text" />
+      <input
+        id="text"
+        value="https://github.com/DanoSvK"
+        type="text"
+        placeholder="Enter text for QR code"
+      />
       <div id="qrcode"></div>
       <div class="buttons">
-        <a href="" class="download action-button"
-          ><span>Download</span><img src="./download.svg" alt=""
-        /></a>
-        <button><span>Share</span><img src="./share.svg" alt="" /></button>
+        <a class="download action-button" download="QRcode">
+          <span>Download</span>
+          <img class="img" src="./download.svg" alt="" />
+        </a>
+        <div class="share action-button">
+          <span>Share</span>
+          <img class="img" src="./share.svg" alt="" />
+        </div>
       </div>
     </section>
   </body>
