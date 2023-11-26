@@ -1,17 +1,24 @@
 const batteryIndicator = document.querySelector(".current-battery");
 const batteryStateMessage = document.querySelector(".state");
+const batteryStatus = document.querySelector(".battery-indicator");
 const batteryPercentageIndicator = document.querySelector(
   ".battery-percentage"
 );
-
 let batteryIsCharging = false;
 const veryLowBattery = 10;
 const lowBattery = 25;
 const middleBattery = 50;
 const highBattery = 75;
-
+const fullBattery = 100;
 const percentage = 100;
+// navigator.getBattery().then((battery) => {
+//   batteryIsCharging = battery.charging;
 
+//   battery.addEventListener("chargingchange", () => {
+//     batteryIsCharging = battery.charging;
+//     console.log(batteryIsCharging);
+//   });
+// });
 // Helper functions
 const handleBatteryColor = (battery) => {
   const batteryLevel = battery.level * percentage;
@@ -40,10 +47,19 @@ const handleBatteryStatus = (battery) => {
 
 const handleBatteryChargingState = (battery) => {
   batteryIsCharging = battery.charging;
-  if (batteryIsCharging) {
+  const batteryLevel = battery.level * percentage;
+  if (battery === fullBattery) {
+    batteryStateMessage.textContent = "Battery is fully charged";
+    batteryStatus.style.opacity = "0";
+  } else if (batteryIsCharging) {
     batteryStateMessage.textContent = "Charging...";
-  } else {
-    batteryStateMessage.textContent = "";
+    batteryStatus.style.opacity = "1";
+  } else if (batteryLevel <= lowBattery && !batteryIsCharging) {
+    batteryStateMessage.textContent = "Battery needs charging!";
+    batteryStatus.style.opacity = "0";
+  } else if (batteryLevel <= veryLowBattery && !batteryIsCharging) {
+    batteryStateMessage.textContent = "Charge the battery!";
+    batteryStatus.style.opacity = "0";
   }
 };
 
