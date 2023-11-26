@@ -6,17 +6,17 @@ html,
 body {
   padding: 0;
   margin: 0;
+  height: 100%;
 }
 
 body {
-  width: 100%;
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #070707;
   color: #ffffff;
   font-family: "Open Sans", sans-serif;
+  padding: 0 10px;
 }
 
 .app {
