@@ -48,12 +48,15 @@ const handleBatteryStatus = (battery) => {
 const handleBatteryChargingState = (battery) => {
   batteryIsCharging = battery.charging;
   const batteryLevel = battery.level * percentage;
-  if (battery === fullBattery) {
-    batteryStateMessage.textContent = "Battery is fully charged";
-    batteryStatus.style.opacity = "0";
-  } else if (batteryIsCharging) {
+  if (batteryIsCharging) {
     batteryStateMessage.textContent = "Charging...";
     batteryStatus.style.opacity = "1";
+  } else if (!batteryIsCharging) {
+    batteryStateMessage.textContent = "";
+    batteryStatus.style.opacity = "0";
+  } else if (battery === fullBattery) {
+    batteryStateMessage.textContent = "Battery is fully charged";
+    batteryStatus.style.opacity = "0";
   } else if (batteryLevel <= lowBattery && !batteryIsCharging) {
     batteryStateMessage.textContent = "Battery needs charging!";
     batteryStatus.style.opacity = "0";
