@@ -5,7 +5,7 @@ const gameBoard = (() => {
       (index, element) =>
         (document.querySelector(
           ".grid"
-        ).innerHTML += `<div class="field" data-id="${element}"></div>`)
+        ).innerHTML += `<div class="field" data-id=${element}></div>`)
     );
   };
   return { render };
@@ -33,31 +33,33 @@ const gameStart = () => {
   let currPlayer = 0;
   let arr = [[], []];
   const players = [
-    createPlayers(prompt("Enter palyer 1 name"), "x"),
-    createPlayers(prompt("Enter palyer 1 name"), "o"),
+    createPlayers(prompt("Enter player 1 name"), "x"),
+    createPlayers(prompt("Enter player 2 name"), "o"),
   ];
+
+  const handleWin = (array, player) => {
+    return winConditions.some((condition) => {
+      return condition.every((index) => array[player].includes(index));
+    });
+  };
+
   gameBoard.render();
   document.querySelector(".grid").addEventListener("click", (e) => {
     if (e.target.classList.contains("field")) {
       if (e.target.innerHTML == "") {
         e.target.innerHTML = players[currPlayer].mark;
-        arr[currPlayer].push(e.target.dataset.id);
+        arr[currPlayer].push(+e.target.dataset.id);
         console.log(arr);
       } else {
         return;
       }
     }
-    if (handleWin(arr)) {
+    if (handleWin(arr, currPlayer)) {
       console.log(`Player ${currPlayer + 1} has won!`);
     } else {
       currPlayer = currPlayer == 0 ? 1 : 0;
     }
   });
-  const handleWin = (array) => {
-    return winConditions.some((condition) => {
-      return condition.every((index) => array[currPlayer].includes(index));
-    });
-  };
 };
 
 document.querySelector("button").addEventListener("click", gameStart);
