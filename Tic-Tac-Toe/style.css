@@ -1,0 +1,58 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+}
+
+.grid {
+  display: none;
+  grid-template-columns: repeat(3, 1fr);
+  width: 500px;
+  height: 500px;
+}
+
+.field {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 5px solid black;
+  font-size: 4rem;
+  min-width: 100px;
+  min-height: 100px;
+}
+
+.no-t {
+  border-top: none;
+}
+
+.no-r {
+  border-right: none;
+}
+
+.no-b {
+  border-bottom: none;
+}
+
+.no-l {
+  border-left: none;
+}
+
+.img-o {
+  width: 100px;
+  height: 100px;
+}
+
+.img-o {
+  width: 100px;
+  height: 100px;
+}
+
+.img-x {
+  width: 70px;
+  height: 70px;
+}
