@@ -2,7 +2,7 @@ const gameBoard = (() => {
   const gameBoard = ["", "", "", "", "", "", "", "", ""];
   const render = () => {
     document.querySelector(".grid").style.display = "grid";
-    document.querySelector("button").style.display = "none";
+    document.querySelector(".btn-pvp").style.display = "none";
   };
   return { render };
 })();
@@ -31,6 +31,7 @@ const gameStart = () => {
   let gameWon = false;
   let currPlayer = 0;
   let arr = [[], []];
+  let arrWin = [];
   const players = [
     createPlayers("Player 1", imgX),
     createPlayers(`Player 2`, imgO),
@@ -38,7 +39,11 @@ const gameStart = () => {
 
   const handleWin = (array, player) => {
     return winConditions.some((condition) => {
-      return condition.every((index) => array[player].includes(index));
+      const isWin = condition.every((index) => array[player].includes(index));
+      if (isWin) {
+        arrWin = condition;
+      }
+      return isWin;
     });
   };
 
@@ -57,11 +62,19 @@ const gameStart = () => {
     }
     if (handleWin(arr, currPlayer)) {
       console.log(`Player ${currPlayer + 1} has won!`);
+      highlightWinningFields(arrWin);
       gameWon = true;
     } else {
       currPlayer = currPlayer == 0 ? 1 : 0;
     }
   });
+
+  const highlightWinningFields = (winningCombination) => {
+    for (const index of winningCombination) {
+      const field = document.querySelector(`.field[data-id="${index}"]`);
+      field.classList.add("winner");
+    }
+  };
 };
 
-document.querySelector("button").addEventListener("click", gameStart);
+document.querySelector(".btn-pvp").addEventListener("click", gameStart);
