@@ -4,9 +4,12 @@ body {
 
 body {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 90vh;
+  font-family: "Luckiest Guy", cursive;
+  background-color: #dbdcdc;
 }
 
 .grid {
@@ -55,4 +58,18 @@ body {
 .img-x {
   width: 70px;
   height: 70px;
+}
+
+.winner {
+  background-color: grey;
+}
+
+h1 {
+  font-size: 5rem;
+}
+.btn-pvp {
+  font-size: 2rem;
+  background-color: #284c76;
+  padding: 10px 30px;
+  border-radius: 10px;
 }
