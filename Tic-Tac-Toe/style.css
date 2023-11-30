@@ -3,6 +3,7 @@ body {
 }
 
 body {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -10,6 +11,21 @@ body {
   min-height: 90vh;
   font-family: "Luckiest Guy", cursive;
   background-color: #dbdcdc;
+}
+
+.win-screen {
+  position: absolute;
+  padding: 10px 30px;
+  background-color: #284c76;
+  display: none;
+  font-size: 2rem;
+  border-radius: 15px;
+  transform: translateY(20px);
+}
+
+hr {
+  border-color: #000000;
+  background-color: #000000;
 }
 
 .grid {
