@@ -26,6 +26,7 @@ const createPlayers = (name, mark) => {
 };
 
 const gameStart = () => {
+  let isWin = false;
   const imgX = '<img class="img-x" src="./x.svg" />';
   const imgO = '<img class="img-o" src="./o.svg" />';
   let gameWon = false;
@@ -39,7 +40,7 @@ const gameStart = () => {
 
   const handleWin = (array, player) => {
     return winConditions.some((condition) => {
-      const isWin = condition.every((index) => array[player].includes(index));
+      isWin = condition.every((index) => array[player].includes(index));
       if (isWin) {
         arrWin = condition;
       }
@@ -47,8 +48,24 @@ const gameStart = () => {
     });
   };
 
+  const handleWinningScreen = (player) => {
+    document.querySelector(".win-screen").style.display = "block";
+    document.querySelector(".win-modal").innerHTML = `<p>Player ${
+      player + 1
+    } won`;
+  };
+
+  const handleRestart = () => {
+    arr = [[], []];
+    arrWin = [];
+    isWin = false;
+    gameWon = false;
+  };
+
   gameBoard.render();
   document.querySelector(".grid").addEventListener("click", (e) => {
+    console.log(arr);
+    console.log(isWin);
     if (gameWon) {
       return;
     }
@@ -63,10 +80,31 @@ const gameStart = () => {
     if (handleWin(arr, currPlayer)) {
       console.log(`Player ${currPlayer + 1} has won!`);
       highlightWinningFields(arrWin);
+      handleWinningScreen(currPlayer);
       gameWon = true;
+      handleRestart();
+      console.log(arr);
     } else {
       currPlayer = currPlayer == 0 ? 1 : 0;
     }
+  });
+
+  document.querySelector(".restart-btn").addEventListener("click", () => {
+    document.querySelectorAll(".field").forEach((el) => {
+      el.innerHTML = "";
+      el.classList.remove("winner");
+    });
+    document.querySelector(".win-screen").style.display = "none";
+  });
+
+  document.querySelector(".main-menu").addEventListener("click", () => {
+    document.querySelectorAll(".field").forEach((el) => {
+      el.innerHTML = "";
+      el.classList.remove("winner");
+    });
+    document.querySelector(".grid").style.display = "none";
+    document.querySelector(".win-screen").style.display = "none";
+    document.querySelector(".btn-pvp").style.display = "block";
   });
 
   const highlightWinningFields = (winningCombination) => {
@@ -78,3 +116,4 @@ const gameStart = () => {
 };
 
 document.querySelector(".btn-pvp").addEventListener("click", gameStart);
+document.querySelector(".restart-btn").addEventListener("click", gameStart);
