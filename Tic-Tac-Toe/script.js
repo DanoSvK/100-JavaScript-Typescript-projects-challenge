@@ -32,7 +32,10 @@ const gameStart = () => {
   let gameWon = false;
   let currPlayer = 0;
   let arr = [[], []];
+  let playerPoints = [[], []];
   let arrWin = [];
+  let rounds = 5;
+  let i = 1;
   const players = [
     createPlayers("Player 1", imgX),
     createPlayers(`Player 2`, imgO),
@@ -49,14 +52,23 @@ const gameStart = () => {
   };
 
   const handleWinningScreen = (player) => {
+    if (rounds === i) {
+      document.querySelector(".win-game").style.display = "block";
+      document.querySelector(".win-game-modal").innerHTML = `<p>Player ${
+        player + 1
+      } won the game!`;
+      return;
+    }
+    i++;
     document.querySelector(".win-screen").style.display = "block";
     document.querySelector(".win-modal").innerHTML = `<p>Player ${
       player + 1
-    } won`;
+    } won round ${i - 1}`;
   };
 
   const handleRestart = () => {
     arr = [[], []];
+    currPlayer = 0;
     arrWin = [];
     isWin = false;
     gameWon = false;
@@ -65,7 +77,6 @@ const gameStart = () => {
   gameBoard.render();
   document.querySelector(".grid").addEventListener("click", (e) => {
     console.log(arr);
-    console.log(isWin);
     if (gameWon) {
       return;
     }
@@ -73,39 +84,62 @@ const gameStart = () => {
       if (e.target.innerHTML == "") {
         e.target.innerHTML = players[currPlayer].mark;
         arr[currPlayer].push(+e.target.dataset.id);
+        if (handleWin(arr, currPlayer)) {
+          highlightWinningFields(arrWin);
+          handleWinningScreen(currPlayer);
+          playerPoints[currPlayer]++;
+          document.querySelector(`.p${currPlayer + 1}`).innerHTML =
+            playerPoints[currPlayer];
+          console.log(playerPoints[currPlayer]);
+          gameWon = true;
+        } else {
+          currPlayer = currPlayer == 0 ? 1 : 0;
+        }
       } else {
         return;
       }
     }
-    if (handleWin(arr, currPlayer)) {
-      console.log(`Player ${currPlayer + 1} has won!`);
-      highlightWinningFields(arrWin);
-      handleWinningScreen(currPlayer);
-      gameWon = true;
-      handleRestart();
-      console.log(arr);
-    } else {
-      currPlayer = currPlayer == 0 ? 1 : 0;
-    }
+  });
+
+  document.querySelector(".next-round-btn").addEventListener("click", () => {
+    document.querySelectorAll(".field").forEach((el) => {
+      el.innerHTML = "";
+      el.classList.remove("winner");
+    });
+    document.querySelector(".win-screen").style.display = "none";
+    handleRestart();
   });
 
   document.querySelector(".restart-btn").addEventListener("click", () => {
+    i = 1;
     document.querySelectorAll(".field").forEach((el) => {
       el.innerHTML = "";
       el.classList.remove("winner");
     });
-    document.querySelector(".win-screen").style.display = "none";
+    document.querySelector(".win-game").style.display = "none";
+    handleRestart();
+    playerPoints = [[], []];
+    document.querySelector(".p1").innerHTML = 0;
+    document.querySelector(".p2").innerHTML = 0;
   });
 
-  document.querySelector(".main-menu").addEventListener("click", () => {
-    document.querySelectorAll(".field").forEach((el) => {
-      el.innerHTML = "";
-      el.classList.remove("winner");
-    });
-    document.querySelector(".grid").style.display = "none";
-    document.querySelector(".win-screen").style.display = "none";
-    document.querySelector(".btn-pvp").style.display = "block";
-  });
+  document.querySelectorAll(".main-menu").forEach((btn) =>
+    btn.addEventListener("click", () => {
+      i = 1;
+      document.querySelectorAll(".field").forEach((el) => {
+        el.innerHTML = "";
+        el.classList.remove("winner");
+      });
+      document.querySelector(".grid").style.display = "none";
+      document.querySelector(".win-screen").style.display = "none";
+      document.querySelector(".win-game").style.display = "none";
+      document.querySelector(".btn-pvp").style.display = "block";
+      handleRestart();
+      playerPoints = [[], []];
+      document.querySelector(".p1").innerHTML = 0;
+      document.querySelector(".p2").innerHTML = 0;
+    })
+  );
 
   const highlightWinningFields = (winningCombination) => {
     for (const index of winningCombination) {
@@ -116,4 +150,4 @@ const gameStart = () => {
 };
 
 document.querySelector(".btn-pvp").addEventListener("click", gameStart);
-document.querySelector(".restart-btn").addEventListener("click", gameStart);
+// document.querySelector(".restart-btn").addEventListener("click", gameStart);
