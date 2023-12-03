@@ -124,9 +124,6 @@ class GameStart {
     } else {
       return;
     }
-    if (this.arrWin.length == 9) {
-      console.log("draw");
-    }
   }
 
   handleNextRound() {
