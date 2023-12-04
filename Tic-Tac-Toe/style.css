@@ -14,7 +14,8 @@ body {
 }
 
 .win-screen,
-.win-game {
+.win-game,
+.draw-screen {
   position: absolute;
   padding: 10px 30px;
   background-color: #284c76;
