@@ -29,12 +29,13 @@ const createPlayers = (name, mark) => {
 // Main object
 class GameStart {
   grid = document.querySelector(".grid");
-  nextRound = document.querySelector(".next-round-btn");
+  nextRound = document.querySelectorAll(".next-round-btn");
   restart = document.querySelector(".restart-btn");
   mainMenu = document.querySelectorAll(".main-menu");
   startBtn = document.querySelector(".btn-pvp");
   winRoundScreen = document.querySelector(".win-screen");
   winGameScreen = document.querySelector(".win-game");
+  drawScreen = document.querySelector(".draw-screen");
   points = document.querySelector(".points");
   isWin = false;
   imgX = '<img class="img-x" src="./x.svg" />';
@@ -44,7 +45,8 @@ class GameStart {
   arr = [[], []];
   playerPoints = [[], []];
   arrWin = [];
-  rounds = 5;
+  rounds = document.querySelector("#number-input").value;
+  moves = 9;
   i = 1;
   players = [
     createPlayers("Player 1", this.imgX),
@@ -54,7 +56,9 @@ class GameStart {
   constructor() {
     this.startBtn.addEventListener("click", gameBoard.render);
     this.grid.addEventListener("click", this.handlePlay.bind(this));
-    this.nextRound.addEventListener("click", this.handleNextRound.bind(this));
+    this.nextRound.forEach((btn) =>
+      btn.addEventListener("click", this.handleNextRound.bind(this))
+    );
     this.restart.addEventListener("click", this.handleRestart.bind(this));
     this.mainMenu.forEach((btn) =>
       btn.addEventListener("click", this.handleMainMenu.bind(this))
@@ -71,21 +75,31 @@ class GameStart {
     });
   }
 
-  handleWinningScreen(player) {
+  handleWinningScreen() {
     // Win round screen
     if (this.rounds === this.i) {
-      this.winGameScreen.style.display = "block";
-      document.querySelector(".win-game-modal").innerHTML = `<p>Player ${
-        player + 1
-      } won the game!`;
-      return;
+      if (this.playerPoints[0] > this.playerPoints[1]) {
+        this.winGameScreen.style.display = "block";
+        document.querySelector(".win-game-modal").innerHTML =
+          "<p>Player 1 won the game!</p>";
+        return;
+      } else if (this.playerPoints[0] < this.playerPoints[1]) {
+        this.winGameScreen.style.display = "block";
+        document.querySelector(".win-game-modal").innerHTML =
+          "<p>Player 2 won the game!</p>";
+        return;
+      } else {
+        this.winGameScreen.style.display = "block";
+        document.querySelector(".win-game-modal").innerHTML = `Draw!`;
+        return;
+      }
     }
     // Win game screen
     this.i++;
     this.winRoundScreen.style.display = "block";
     document.querySelector(".win-modal").innerHTML = `<p>Player ${
-      player + 1
-    } won round ${this.i - 1}`;
+      this.currPlayer + 1
+    } won round ${this.i - 1}</p>`;
   }
 
   handleDataReset = () => {
@@ -94,6 +108,7 @@ class GameStart {
     this.arrWin = [];
     this.isWin = false;
     this.gameWon = false;
+    this.moves = 9;
   };
 
   highlightWinningFields(winningCombination) {
@@ -102,19 +117,22 @@ class GameStart {
       field.classList.add("winner");
     }
   }
-
+  handleDraw() {
+    document.querySelector(".draw-screen").style.display = "block";
+    document.querySelector(".draw-modal").innerHTML = `<p>It's a draw!</p>`;
+  }
   handlePlay(e) {
-    console.log(this.arr.length);
     if (this.gameWon) {
       return;
     }
     if (e.target.classList.contains("field") && e.target.innerHTML == "") {
+      this.moves--;
       e.target.innerHTML = this.players[this.currPlayer].mark;
       this.arr[this.currPlayer].push(+e.target.dataset.id);
       if (this.handleWin(this.arr, this.currPlayer)) {
-        this.highlightWinningFields(this.arrWin);
-        this.handleWinningScreen(this.currPlayer);
         this.playerPoints[this.currPlayer]++;
+        this.highlightWinningFields(this.arrWin);
+        this.handleWinningScreen();
         document.querySelector(`.p${this.currPlayer + 1}`).innerHTML =
           this.playerPoints[this.currPlayer];
         this.gameWon = true;
@@ -124,6 +142,10 @@ class GameStart {
     } else {
       return;
     }
+    if (this.moves === 0 && !this.handleWin(this.arr, this.currPlayer)) {
+      this.handleDraw();
+      this.handleDataReset();
+    }
   }
 
   handleNextRound() {
@@ -131,7 +153,8 @@ class GameStart {
       el.innerHTML = "";
       el.classList.remove("winner");
     });
-    document.querySelector(".win-screen").style.display = "none";
+    this.winRoundScreen.style.display = "none";
+    this.drawScreen.style.display = "none";
     this.handleDataReset();
   }
 
@@ -147,7 +170,8 @@ class GameStart {
       el.innerHTML = "";
       el.classList.remove("winner");
     });
-    document.querySelector(".win-game").style.display = "none";
+    this.winGameScreen.style.display = "none";
+
     this.handleDataReset();
     this.resetPlayerPoint();
   }
@@ -162,6 +186,7 @@ class GameStart {
       this.winGameScreen.style.display = "none";
       this.startBtn.style.display = "block";
       this.points.style.display = "none";
+      this.drawScreen.style.display = "none";
       this.handleDataReset();
       this.resetPlayerPoint();
     });
