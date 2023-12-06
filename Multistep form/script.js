@@ -10,49 +10,122 @@ inputs.forEach((input) =>
     }
   })
 );
-// inputs.forEach((input) =>
-//   input.addEventListener("active", (e) => {
-//     e.target.nextElementSibling.style.top = "-25px";
-//     e.target.nextElementSibling.style.left = "-15px";
-//   })
-// );
-// inputs.forEach((input) => {
-//   if (input.value != "") {
-//     input.nextElementSibling.style.top = "-25px";
-//     input.nextElementSibling.style.left = "-15px";
+
+document
+  .querySelectorAll(".step")
+  .forEach((el, index) => (el.style.transform = `translateX(${index * 150}%)`));
+
+let index;
+let currSlide = 0;
+
+const fn = (slide) => {
+  document
+    .querySelectorAll(".step")
+    .forEach(
+      (el, index) =>
+        (el.style.transform = `translateX(${(index - slide) * 150}%)`)
+    );
+};
+
+document.querySelectorAll(".next").forEach((btn) =>
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    currSlide++;
+    fn(currSlide);
+  })
+);
+
+document.querySelectorAll(".back").forEach((btn) =>
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    currSlide--;
+    fn(currSlide);
+  })
+);
+
+let isInputModified = false;
+
+// emailInput.addEventListener("input", () => {
+//   isInputModified = true;
+//   console.log(isInputModified);
+// });
+
+// emailInput.addEventListener("input", () => {
+//   isInputModified = true;
+
+//   const emailInput = document.getElementById("email");
+//   const errorMessage = document.getElementById("email-error-message");
+//   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+//   if (isInputModified && emailInput.value.trim() === "") {
+//     console.log("oke");
+//     errorMessage.textContent = "Please enter an email address.";
+//   } else if (emailPattern.test(emailInput.value)) {
+//     errorMessage.textContent = ""; // Clear error message
 //   } else {
-//     input.nextElementSibling.style.top = "0px";
-//     input.nextElementSibling.style.left = "0px";
+//     errorMessage.textContent = "Please enter a valid email address.";
 //   }
 // });
 
-// document.addEventListener("input", function (e) {
-//   if (e.target.tagName === "INPUT") {
-//     const inputId = e.target.id;
-//     const associatedLabel = document.querySelector(`label[for="${inputId}"]`);
+document.querySelectorAll("input").forEach((input) =>
+  input.addEventListener("input", (e) => {
+    isInputModified = true;
+    // Validate email
+    if (e.target.id === "email") {
+      const emailErrorMessage = document.getElementById("email-error-message");
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (isInputModified && e.target.value.trim() === "") {
+        emailErrorMessage.textContent = "Please, enter an email address";
+      } else if (emailPattern.test(emailInput.value)) {
+        emailErrorMessage.textContent = ""; // Clear error message
+      } else {
+        emailErrorMessage.textContent = "Please enter a valid email address";
+      }
+    }
+    // Validate password
+    else if (e.target.id === "password") {
+      const passErrorMessage = document.getElementById(
+        "password-error-message"
+      );
+      const passInput = document.getElementById("password");
+      if (isInputModified && passInput.value.trim() === "") {
+        passErrorMessage.textContent = "Please, enter a password";
+      } else if (passInput.value.length < 8) {
+        passErrorMessage.textContent =
+          "Your password must contain eight characters";
+      } else {
+        passErrorMessage.textContent = "";
+      }
+    }
+    // Validate password confirmation
+    else if (e.target.id === "confirm-password") {
+      const passInput = document.getElementById("password");
+      const confirmPassInput = document.getElementById("confirm-password");
+      const confirmPassErrorMessage = document.getElementById(
+        "confirm-password-error-message"
+      );
+      if (confirmPassInput.value != passInput.value) {
+        confirmPassErrorMessage.textContent =
+          "The entered passwords do not match";
+      } else if (passInput.value === "") {
+        confirmPassErrorMessage.textContent = "";
+      } else if (confirmPassInput.value === passInput.value) {
+        confirmPassErrorMessage.textContent = "";
+      } else if (confirmPassInput.value === "" && passInput.value === "") {
+        confirmPassErrorMessage.textContent = "";
+      }
+    }
 
-//     if (associatedLabel) {
-//       const spanElement = associatedLabel.nextElementSibling;
-//       if (spanElement) {
-//         // Do something with the spanElement, for example, modify its content or style
-//         spanElement.textContent = "New Text"; // Change this line based on your requirements
-//       }
-//     }
-//   }
-// });
+    // Validate others
+    else {
+      const errorMessage = document.querySelector(
+        `#${e.target.id}-error-message`
+      );
 
-// inputs.forEach((input) =>
-//   input.addEventListener("input", () => {
-//     const inputId = input.id;
-//     const associatedLabel = document.querySelector(`label[for="${inputId}"]`);
-//     console.log(input.nextSibling);
-//     if (associatedLabel) {
-//       const spanElement = associatedLabel.nextElementSibling;
-//       console.log(spanElement);
-//       if (spanElement) {
-//         spanElement.style.top = "-25px";
-//         spanElement.style.left = "-15px";
-//       }
-//     }
-//   })
-// );
+      if (isInputModified && e.target.value.trim() === "") {
+        errorMessage.textContent = "This field is required  ";
+      } else if (e.target.value.trim() != "") {
+        errorMessage.textContent = ""; // Clear error message
+      }
+    }
+  })
+);
