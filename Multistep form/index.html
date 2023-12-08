@@ -41,7 +41,7 @@
           <div class="input-container">
             <label for="confirm-password"></label>
             <input
-              type="confirm-password"
+              type="password"
               name="confirm-password"
               id="confirm-password"
               required
@@ -78,10 +78,12 @@
               <option value="female">Female</option>
               <option value="male">Male</option>
             </select>
+            <div id="gender-error-message" class="error-message"></div>
           </div>
           <div class="input-container">
             <!-- <label class="birthdate" for="birthdate">Date of birth:</label> -->
             <input type="date" name="birthdate" id="birthdate" required />
+            <div id="birthdate-error-message" class="error-message"></div>
           </div>
           <div class="buttons">
             <button class="back" type="submit">Back</button>
@@ -94,9 +96,11 @@
         <form>
           <p>Address</p>
           <div class="input-container">
-            <label for="street" required></label>
+            <label for="street"></label>
             <input type="street" name="street" id="street" required />
+
             <span>STREET</span>
+            <div id="street-error-message" class="error-message"></div>
           </div>
           <div class="input-container">
             <label for="city"></label>
@@ -398,7 +402,7 @@
           </div>
           <div class="buttons">
             <button class="back" type="submit">Back</button>
-            <button type="submit">Submit</button>
+            <button class="submit" type="submit">Submit</button>
           </div>
         </form>
       </section>
