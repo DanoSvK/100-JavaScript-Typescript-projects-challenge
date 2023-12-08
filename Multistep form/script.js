@@ -15,33 +15,87 @@ document
   .querySelectorAll(".step")
   .forEach((el, index) => (el.style.transform = `translateX(${index * 150}%)`));
 
-let index;
-let currSlide = 0;
+const checkRequiredValues = (e) => {
+  const form = e.target.form;
+  const inputs = form.querySelectorAll("input[required]");
 
-const fn = (slide) => {
-  document
-    .querySelectorAll(".step")
-    .forEach(
-      (el, index) =>
-        (el.style.transform = `translateX(${(index - slide) * 150}%)`)
+  const hasValue = Array.from(inputs).every(
+    (input) => input.value.trim() != ""
+  );
+  // return hasValue;
+
+  if (hasValue) {
+    e.preventDefault();
+    let index;
+    let currSlide = 0;
+
+    const fn = (slide) => {
+      document
+        .querySelectorAll(".step")
+        .forEach(
+          (el, index) =>
+            (el.style.transform = `translateX(${(index - slide) * 150}%)`)
+        );
+    };
+
+    document.querySelectorAll(".next").forEach((btn) =>
+      btn.addEventListener("click", (e) => {
+        // e.preventDefault();
+        currSlide++;
+        fn(currSlide);
+      })
     );
+
+    document.querySelectorAll(".back").forEach((btn) =>
+      btn.addEventListener("click", (e) => {
+        // e.preventDefault();
+        currSlide--;
+        fn(currSlide);
+      })
+    );
+  } else {
+    console.log("nope");
+  }
 };
 
-document.querySelectorAll(".next").forEach((btn) =>
-  btn.addEventListener("click", (e) => {
-    e.preventDefault();
-    currSlide++;
-    fn(currSlide);
-  })
-);
+// document.querySelectorAll(".next").forEach((btn) =>
+//   btn.addEventListener("click", (e) => {
+//     if (checkRequiredValues(e)) {
+//       e.preventDefault();
+//       let index;
+//       let currSlide = 0;
 
-document.querySelectorAll(".back").forEach((btn) =>
-  btn.addEventListener("click", (e) => {
-    e.preventDefault();
-    currSlide--;
-    fn(currSlide);
-  })
-);
+//       const fn = (slide) => {
+//         document
+//           .querySelectorAll(".step")
+//           .forEach(
+//             (el, index) =>
+//               (el.style.transform = `translateX(${(index - slide) * 150}%)`)
+//           );
+//       };
+
+//       document.querySelectorAll(".next").forEach((btn) =>
+//         btn.addEventListener("click", (e) => {
+//           // e.preventDefault();
+//           currSlide++;
+//           fn(currSlide);
+//         })
+//       );
+
+//       document.querySelectorAll(".back").forEach((btn) =>
+//         btn.addEventListener("click", (e) => {
+//           // e.preventDefault();
+//           currSlide--;
+//           fn(currSlide);
+//         })
+//       );
+//     } else {
+//       console.log("nope");
+//     }
+//   })
+// );
+
+// let index;
 
 let isInputModified = false;
 
@@ -71,6 +125,7 @@ document.querySelectorAll("input").forEach((input) =>
     isInputModified = true;
     // Validate email
     if (e.target.id === "email") {
+      const emailInput = document.getElementById("email");
       const emailErrorMessage = document.getElementById("email-error-message");
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (isInputModified && e.target.value.trim() === "") {
@@ -86,7 +141,12 @@ document.querySelectorAll("input").forEach((input) =>
       const passErrorMessage = document.getElementById(
         "password-error-message"
       );
+      const confirmPassErrorMessage = document.getElementById(
+        "confirm-password-error-message"
+      );
+      const confirmPassInput = document.getElementById("confirm-password");
       const passInput = document.getElementById("password");
+
       if (isInputModified && passInput.value.trim() === "") {
         passErrorMessage.textContent = "Please, enter a password";
       } else if (passInput.value.length < 8) {
@@ -94,6 +154,12 @@ document.querySelectorAll("input").forEach((input) =>
           "Your password must contain eight characters";
       } else {
         passErrorMessage.textContent = "";
+      }
+      if (confirmPassInput.value === passInput.value) {
+        confirmPassErrorMessage.textContent = "";
+      } else if (confirmPassInput.value != passInput.value) {
+        confirmPassErrorMessage.textContent =
+          "The entered passwords do not match";
       }
     }
     // Validate password confirmation
@@ -129,3 +195,14 @@ document.querySelectorAll("input").forEach((input) =>
     }
   })
 );
+
+// document.querySelector(".submit").addEventListener("click", (e) => {
+//   e.preventDefault();
+
+// });
+
+// document.querySelectorAll(".next").forEach((btn) =>
+//   btn.addEventListener("click", (e) => {
+//     e.preventDefault();
+//   })
+// );
