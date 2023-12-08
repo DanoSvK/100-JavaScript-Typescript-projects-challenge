@@ -15,6 +15,42 @@ document
   .querySelectorAll(".step")
   .forEach((el, index) => (el.style.transform = `translateX(${index * 150}%)`));
 
+let index;
+let currSlide = 0;
+
+const fn = (slide) => {
+  document
+    .querySelectorAll(".step")
+    .forEach(
+      (el, index) =>
+        (el.style.transform = `translateX(${(index - slide) * 150}%)`)
+    );
+};
+
+document.querySelectorAll(".next").forEach((btn) =>
+  btn.addEventListener("click", (e) => {
+    if (checkRequiredValues(e)) {
+      e.preventDefault();
+      currSlide++;
+      fn(currSlide);
+    } else {
+      return;
+    }
+  })
+);
+
+document.querySelectorAll(".back").forEach((btn) =>
+  btn.addEventListener("click", (e) => {
+    if (checkRequiredValues(e)) {
+      e.preventDefault();
+      currSlide--;
+      fn(currSlide);
+    } else {
+      return;
+    }
+  })
+);
+
 const checkRequiredValues = (e) => {
   const form = e.target.form;
   const inputs = form.querySelectorAll("input[required]");
@@ -22,40 +58,7 @@ const checkRequiredValues = (e) => {
   const hasValue = Array.from(inputs).every(
     (input) => input.value.trim() != ""
   );
-  // return hasValue;
-
-  if (hasValue) {
-    e.preventDefault();
-    let index;
-    let currSlide = 0;
-
-    const fn = (slide) => {
-      document
-        .querySelectorAll(".step")
-        .forEach(
-          (el, index) =>
-            (el.style.transform = `translateX(${(index - slide) * 150}%)`)
-        );
-    };
-
-    document.querySelectorAll(".next").forEach((btn) =>
-      btn.addEventListener("click", (e) => {
-        // e.preventDefault();
-        currSlide++;
-        fn(currSlide);
-      })
-    );
-
-    document.querySelectorAll(".back").forEach((btn) =>
-      btn.addEventListener("click", (e) => {
-        // e.preventDefault();
-        currSlide--;
-        fn(currSlide);
-      })
-    );
-  } else {
-    console.log("nope");
-  }
+  return hasValue;
 };
 
 // document.querySelectorAll(".next").forEach((btn) =>
@@ -198,11 +201,4 @@ document.querySelectorAll("input").forEach((input) =>
 
 // document.querySelector(".submit").addEventListener("click", (e) => {
 //   e.preventDefault();
-
 // });
-
-// document.querySelectorAll(".next").forEach((btn) =>
-//   btn.addEventListener("click", (e) => {
-//     e.preventDefault();
-//   })
-// );
