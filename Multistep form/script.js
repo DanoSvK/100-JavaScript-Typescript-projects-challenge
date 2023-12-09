@@ -1,4 +1,8 @@
 const inputs = document.querySelectorAll("input");
+const progressLine = document.querySelector(".line");
+const allInputs = document.querySelectorAll(".input");
+const form = document.querySelector(".container");
+const welcomeMsg = document.querySelector(".welcome");
 
 inputs.forEach((input) =>
   input.addEventListener("change", (e) => {
@@ -27,12 +31,26 @@ const fn = (slide) => {
     );
 };
 
+const moveStepsLine = () => {
+  if (currSlide === 0) {
+    progressLine.classList.remove("line-step-2");
+    progressLine.classList.remove("line-step-3");
+  } else if (currSlide === 1) {
+    progressLine.classList.add("line-step-2");
+    progressLine.classList.remove("line-step-3");
+  } else if (currSlide === 2) {
+    progressLine.classList.add("line-step-3");
+    progressLine.classList.remove("line-step-2");
+  }
+};
+
 document.querySelectorAll(".next").forEach((btn) =>
   btn.addEventListener("click", (e) => {
     if (checkRequiredValues(e)) {
       e.preventDefault();
       currSlide++;
       fn(currSlide);
+      moveStepsLine();
     } else {
       return;
     }
@@ -41,87 +59,23 @@ document.querySelectorAll(".next").forEach((btn) =>
 
 document.querySelectorAll(".back").forEach((btn) =>
   btn.addEventListener("click", (e) => {
-    if (checkRequiredValues(e)) {
-      e.preventDefault();
-      currSlide--;
-      fn(currSlide);
-    } else {
-      return;
-    }
+    e.preventDefault();
+    currSlide--;
+    fn(currSlide);
+    moveStepsLine();
   })
 );
 
 const checkRequiredValues = (e) => {
   const form = e.target.form;
   const inputs = form.querySelectorAll("input[required]");
-
   const hasValue = Array.from(inputs).every(
     (input) => input.value.trim() != ""
   );
   return hasValue;
 };
 
-// document.querySelectorAll(".next").forEach((btn) =>
-//   btn.addEventListener("click", (e) => {
-//     if (checkRequiredValues(e)) {
-//       e.preventDefault();
-//       let index;
-//       let currSlide = 0;
-
-//       const fn = (slide) => {
-//         document
-//           .querySelectorAll(".step")
-//           .forEach(
-//             (el, index) =>
-//               (el.style.transform = `translateX(${(index - slide) * 150}%)`)
-//           );
-//       };
-
-//       document.querySelectorAll(".next").forEach((btn) =>
-//         btn.addEventListener("click", (e) => {
-//           // e.preventDefault();
-//           currSlide++;
-//           fn(currSlide);
-//         })
-//       );
-
-//       document.querySelectorAll(".back").forEach((btn) =>
-//         btn.addEventListener("click", (e) => {
-//           // e.preventDefault();
-//           currSlide--;
-//           fn(currSlide);
-//         })
-//       );
-//     } else {
-//       console.log("nope");
-//     }
-//   })
-// );
-
-// let index;
-
 let isInputModified = false;
-
-// emailInput.addEventListener("input", () => {
-//   isInputModified = true;
-//   console.log(isInputModified);
-// });
-
-// emailInput.addEventListener("input", () => {
-//   isInputModified = true;
-
-//   const emailInput = document.getElementById("email");
-//   const errorMessage = document.getElementById("email-error-message");
-//   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-//   if (isInputModified && emailInput.value.trim() === "") {
-//     console.log("oke");
-//     errorMessage.textContent = "Please enter an email address.";
-//   } else if (emailPattern.test(emailInput.value)) {
-//     errorMessage.textContent = ""; // Clear error message
-//   } else {
-//     errorMessage.textContent = "Please enter a valid email address.";
-//   }
-// });
 
 document.querySelectorAll("input").forEach((input) =>
   input.addEventListener("input", (e) => {
@@ -199,6 +153,55 @@ document.querySelectorAll("input").forEach((input) =>
   })
 );
 
-// document.querySelector(".submit").addEventListener("click", (e) => {
-//   e.preventDefault();
-// });
+class AccData {
+  constructor(
+    email,
+    username,
+    firstName,
+    surrname,
+    gender,
+    birthdate,
+    street,
+    city = "No city provided",
+    postalCode,
+    country
+  ) {
+    this.email = email;
+    this.username = username;
+    this.firstName = firstName;
+    this.surrname = surrname;
+    this.gender = gender;
+    this.birthdate = birthdate;
+    this.street = street;
+    this.city = city;
+    this.postalCode = postalCode;
+    this.country = country;
+  }
+}
+
+const values = (arr) => {
+  const newArr = Array.from(arr);
+  let allValues = [];
+  newArr.map((el) => allValues.push(el.value));
+  return allValues;
+};
+
+let data;
+document.querySelector(".submit").addEventListener("click", (e) => {
+  e.preventDefault();
+  const accData = [...values(allInputs)];
+
+  const newArr = Array.from(allInputs);
+  const test = newArr.map((el, i) => console.log(el, el.value, i));
+  data = new AccData(...values(allInputs));
+  form.style.display = "none";
+  welcomeMsg.style.display = "block";
+
+  let html = newArr
+    .map(
+      (el, i) => `<li class="list-item">${el.id}: <span>${el.value}</span></li>`
+    )
+    .join("");
+  console.log(html);
+  document.querySelector(".list").insertAdjacentHTML("afterbegin", html);
+});
