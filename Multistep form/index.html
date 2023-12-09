@@ -9,10 +9,14 @@
   </head>
   <body>
     <section class="image"></section>
-
+    <div class="welcome">
+      <h1>Welcome back</h1>
+      <p>Here are you account information</p>
+      <ul class="list"></ul>
+    </div>
     <section class="container">
-      <!-- <h1>CREATE AN ACCOUNT, BITCH!</h1> -->
       <div class="wrapper">
+        <div class="line"></div>
         <div>Step 1</div>
         <div>Step 2</div>
         <div>Step 3</div>
@@ -22,20 +26,32 @@
           <p>Account information</p>
           <div class="input-container">
             <label for="email"></label>
-            <input type="email" name="email" id="email" required />
-            <span>EMAIL</span>
+            <input
+              class="input"
+              type="email"
+              name="email"
+              id="email"
+              required
+            />
+            <span class="placeholder">EMAIL</span>
             <div id="email-error-message" class="error-message"></div>
           </div>
           <div class="input-container">
             <label for="username"></label>
-            <input type="text" name="username" id="username" required />
-            <span>USERNAME</span>
+            <input
+              class="input"
+              type="text"
+              name="username"
+              id="username"
+              required
+            />
+            <span class="placeholder">USERNAME</span>
             <div id="username-error-message" class="error-message"></div>
           </div>
           <div class="input-container">
             <label for="password"></label>
             <input type="password" name="password" id="password" required />
-            <span>PASSWORD</span>
+            <span class="placeholder">PASSWORD</span>
             <div id="password-error-message" class="error-message"></div>
           </div>
           <div class="input-container">
@@ -46,7 +62,7 @@
               id="confirm-password"
               required
             />
-            <span>CONFIRM PASSWORD</span>
+            <span class="placeholder">CONFIRM PASSWORD</span>
             <div
               id="confirm-password-error-message"
               class="error-message"
@@ -61,19 +77,31 @@
           <p>Personla information</p>
           <div class="input-container">
             <label for="first-name" required></label>
-            <input type="text" name="first-name" id="first-name" required />
-            <span>FIRST NAME</span>
+            <input
+              class="input"
+              type="text"
+              name="first-name"
+              id="first-name"
+              required
+            />
+            <span class="placeholder">FIRST NAME</span>
             <div id="first-name-error-message" class="error-message"></div>
           </div>
           <div class="input-container">
             <label for="surrname"></label>
-            <input type="text" name="surrname" id="surrname" required />
-            <span>SURRNAME</span>
+            <input
+              class="input"
+              type="text"
+              name="surrname"
+              id="surrname"
+              required
+            />
+            <span class="placeholder">SURRNAME</span>
             <div id="surrname-error-message" class="error-message"></div>
           </div>
           <div class="input-container">
             <label for="gender"></label>
-            <select name="gender" id="gender" required>
+            <select class="input" name="gender" id="gender" required>
               <option value="" selected>Select a gender</option>
               <option value="female">Female</option>
               <option value="male">Male</option>
@@ -82,7 +110,13 @@
           </div>
           <div class="input-container">
             <!-- <label class="birthdate" for="birthdate">Date of birth:</label> -->
-            <input type="date" name="birthdate" id="birthdate" required />
+            <input
+              class="input"
+              type="date"
+              name="birthdate"
+              id="birthdate"
+              required
+            />
             <div id="birthdate-error-message" class="error-message"></div>
           </div>
           <div class="buttons">
@@ -97,25 +131,38 @@
           <p>Address</p>
           <div class="input-container">
             <label for="street"></label>
-            <input type="street" name="street" id="street" required />
+            <input
+              class="input"
+              type="street"
+              name="street"
+              id="street"
+              required
+            />
 
-            <span>STREET</span>
+            <span class="placeholder">STREET</span>
             <div id="street-error-message" class="error-message"></div>
           </div>
           <div class="input-container">
             <label for="city"></label>
-            <input type="text" name="city" id="city" />
-            <span>CITY</span>
+            <input class="input" type="text" name="city" id="city" required />
+            <span class="placeholder">CITY</span>
+            <div id="city-error-message" class="error-message"></div>
           </div>
           <div class="input-container">
             <label for="postal-code"></label>
-            <input type="text" name="postal-code" id="postal-code" required />
-            <span>POSTAL CODE</span>
+            <input
+              class="input"
+              type="text"
+              name="postal-code"
+              id="postal-code"
+              required
+            />
+            <span class="placeholder">POSTAL CODE</span>
             <div id="postal-code-error-message" class="error-message"></div>
           </div>
           <div class="input-container">
             <!-- <label class="country" for="country">Country:</label> -->
-            <select required>
+            <select class="input" required>
               <option value="" selected>Select a country</option>
               <option value="Afghanistan">Afghanistan</option>
               <option value="Albania">Albania</option>
