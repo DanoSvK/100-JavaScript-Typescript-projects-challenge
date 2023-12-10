@@ -3,6 +3,7 @@ const progressLine = document.querySelector(".line");
 const allInputs = document.querySelectorAll(".input");
 const form = document.querySelector(".container");
 const welcomeMsg = document.querySelector(".welcome");
+const dataInfoList = document.querySelector(".list");
 
 inputs.forEach((input) =>
   input.addEventListener("change", (e) => {
@@ -153,55 +154,20 @@ document.querySelectorAll("input").forEach((input) =>
   })
 );
 
-class AccData {
-  constructor(
-    email,
-    username,
-    firstName,
-    surrname,
-    gender,
-    birthdate,
-    street,
-    city = "No city provided",
-    postalCode,
-    country
-  ) {
-    this.email = email;
-    this.username = username;
-    this.firstName = firstName;
-    this.surrname = surrname;
-    this.gender = gender;
-    this.birthdate = birthdate;
-    this.street = street;
-    this.city = city;
-    this.postalCode = postalCode;
-    this.country = country;
-  }
-}
-
-const values = (arr) => {
-  const newArr = Array.from(arr);
-  let allValues = [];
-  newArr.map((el) => allValues.push(el.value));
-  return allValues;
-};
-
-let data;
+/// Hide sign up form and show welcome message with all data entered except password
 document.querySelector(".submit").addEventListener("click", (e) => {
   e.preventDefault();
-  const accData = [...values(allInputs)];
-
-  const newArr = Array.from(allInputs);
-  const test = newArr.map((el, i) => console.log(el, el.value, i));
-  data = new AccData(...values(allInputs));
   form.style.display = "none";
   welcomeMsg.style.display = "block";
-
+  const newArr = Array.from(allInputs);
   let html = newArr
     .map(
-      (el, i) => `<li class="list-item">${el.id}: <span>${el.value}</span></li>`
+      (el) =>
+        `<li class="list-item">${
+          el.id.charAt(0).toUpperCase() + el.id.slice(1)
+        }: <span>${el.value}</span></li>`
     )
     .join("");
-  console.log(html);
-  document.querySelector(".list").insertAdjacentHTML("afterbegin", html);
+  console.log(typeof newArr[0].id[0]);
+  dataInfoList.insertAdjacentHTML("afterbegin", html);
 });
