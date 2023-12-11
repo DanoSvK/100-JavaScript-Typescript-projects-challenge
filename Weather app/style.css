@@ -1,0 +1,56 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  padding: 1.25rem;
+  background: linear-gradient(
+    90deg,
+    rgba(9, 121, 112, 1) 17%,
+    rgba(9, 121, 120, 1) 53%,
+    rgba(9, 103, 121, 1) 77%
+  );
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.current-forecast {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  border: 1px solid black;
+}
+
+.hourly-forecast {
+  display: flex;
+  border: 1px solid black;
+  padding: 10px;
+  text-align: center;
+}
+
+.daily-forecast {
+  border: 1px solid black;
+}
+.daily-forecast__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.hourly-forecast__time {
+  padding: 0 5px;
+}
