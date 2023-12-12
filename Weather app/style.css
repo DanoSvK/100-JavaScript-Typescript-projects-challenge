@@ -9,7 +9,7 @@ body {
 }
 
 body {
-  background-image: url("./pexels-pixabay-33545.jpg");
+  background-image: url("./background.jpg");
   background-size: cover;
   display: flex;
   justify-content: center;
