@@ -26,7 +26,7 @@ body {
   ); */
 }
 .card {
-  width: 31.25rem;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -43,10 +43,12 @@ table {
   flex-direction: column;
   border: 1px solid black;
 }
-
+.hourly-forecast__item {
+  flex: 1;
+}
 .hourly-forecast {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   border: 1px solid black;
   padding: 10px;
   text-align: center;
@@ -90,4 +92,20 @@ tr {
   justify-content: center;
   gap: 10px;
   text-align: end;
+}
+
+thead tr {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.temp-low {
+  color: #a5d6ff;
+}
+
+@media (min-width: 580px) {
+  .card {
+    width: 33.75rem;
+  }
 }
