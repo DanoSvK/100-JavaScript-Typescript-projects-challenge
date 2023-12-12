@@ -9,23 +9,33 @@ body {
 }
 
 body {
+  background-image: url("./pexels-pixabay-33545.jpg");
+  background-size: cover;
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 20px;
   width: 100%;
   min-height: 100vh;
   padding: 1.25rem;
-  background: linear-gradient(
+  /* background: linear-gradient(
     90deg,
     rgba(9, 121, 112, 1) 17%,
     rgba(9, 121, 120, 1) 53%,
     rgba(9, 103, 121, 1) 77%
-  );
+  ); */
 }
 .card {
+  width: 31.25rem;
   display: flex;
   flex-direction: column;
   gap: 20px;
+  color: white;
+}
+.current-forecast,
+.hourly-forecast,
+table {
+  background: rgba(0, 0, 0, 0.54);
 }
 .current-forecast {
   display: flex;
@@ -36,6 +46,7 @@ body {
 
 .hourly-forecast {
   display: flex;
+  justify-content: space-between;
   border: 1px solid black;
   padding: 10px;
   text-align: center;
@@ -44,13 +55,39 @@ body {
 .daily-forecast {
   border: 1px solid black;
 }
+tr {
+  border-bottom: 1px dotted grey;
+}
 .daily-forecast__item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px;
 }
-
+.daily-forecast__item * {
+  flex: 1;
+}
+/* .daily-forecast__item *:last-child {
+  text-align: end;
+} */
 .hourly-forecast__time {
   padding: 0 5px;
+}
+
+.arrow {
+  transform-origin: center;
+}
+
+.daily-forecast__wind {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.daily-forecast__temps {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  text-align: end;
 }
