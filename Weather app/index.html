@@ -4,19 +4,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./style.css" />
-    <script async src="./script.js"></script>
+    <script type="module" async src="./script.js"></script>
     <title>Weather app</title>
   </head>
   <body>
     <section class="card">
       <section class="current-forecast">
+        <input type="text" />
+        <button>Click</button>
         <h1 class="current-forecast__city"></h1>
-        <h1 class="current-forecast__temperature">Temp</h1>
+        <h1 class="current-forecast__temp">Temp</h1>
         <p class="current-forecast__weather">Weather type</p>
       </section>
       <section class="hourly-forecast"></section>
-      <section class="daily-forecast">
-        <div class="daily-forecast__item">
+      <table>
+        <tbody class="daily-forecast">
+          <!-- <div class="daily-forecast__item">
           <p>Day</p>
           <img src="" alt="" />
           <p>Something</p>
@@ -45,8 +48,9 @@
           <img src="" alt="" />
           <p>Something</p>
           <p>Temp</p>
-        </div>
-      </section>
+        </div> -->
+        </tbody>
+      </table>
     </section>
   </body>
 </html>
