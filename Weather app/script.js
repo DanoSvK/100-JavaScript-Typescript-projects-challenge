@@ -16,6 +16,7 @@ const isAPIKeyProvided = () => {
 isAPIKeyProvided();
 
 // Main app architecture
+const sixThreeHourForecasts = 6;
 const hourlyForecast = document.querySelector(".hourly-forecast");
 const dailyForecast = document.querySelector(".daily-forecast");
 
@@ -29,6 +30,7 @@ let city = document.querySelector("input");
 class WeatherApp {
   lat;
   lon;
+
   constructor() {
     this.myLocation();
     btn.addEventListener("click", () => {
@@ -80,7 +82,7 @@ class WeatherApp {
       const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}`;
       const data = await fetchURL(url);
       // Render markup
-      for (let i = 0; i < config.SixThreeHourForecasts; i++) {
+      for (let i = 0; i < sixThreeHourForecasts; i++) {
         const temperatureHtml = this.threeHoursTempMarkup(data.list[i]);
         hourlyForecast.insertAdjacentHTML("beforeend", temperatureHtml);
       }
@@ -151,7 +153,7 @@ class WeatherApp {
 
       // Render markup
       hourlyForecast.innerHTML = "";
-      for (let i = 0; i < config.SixThreeHourForecasts; i++) {
+      for (let i = 0; i < sixThreeHourForecasts; i++) {
         const temperatureHtml = this.threeHoursTempMarkup(data.list[i]);
         hourlyForecast.insertAdjacentHTML("beforeend", temperatureHtml);
       }
