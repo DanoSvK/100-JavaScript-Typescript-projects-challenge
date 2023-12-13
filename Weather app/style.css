@@ -8,7 +8,13 @@ body {
   padding: 0;
 }
 
+h1 {
+  font-size: 2rem;
+}
+
 body {
+  position: relative;
+  font-size: 1rem;
   background-image: url("./background.jpg");
   background-size: cover;
   display: flex;
@@ -25,6 +31,24 @@ body {
     rgba(9, 103, 121, 1) 77%
   ); */
 }
+.error-message {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: red;
+  letter-spacing: 1.3px;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px 30px;
+  border-radius: 10px;
+  display: none;
+  transition: display ease-out 0.3s;
+}
+
+.active {
+  display: block;
+}
+
 .card {
   width: 100%;
   display: flex;
@@ -32,46 +56,77 @@ body {
   gap: 20px;
   color: white;
 }
+
 .current-forecast,
 .hourly-forecast,
 table {
   background: rgba(0, 0, 0, 0.54);
 }
+
 .current-forecast {
   display: flex;
   align-items: center;
   flex-direction: column;
-  border: 1px solid black;
+}
+.current-forecast:first-child {
+  display: flex;
+  justify-self: start;
+}
+.search {
+  display: flex;
+  align-self: flex-start; /* Align this child to the start (left) */
+  padding-left: 20px;
+  align-items: center;
+  gap: 20px;
+}
+input {
+  appearance: none;
+  border: none;
+  padding: 5px;
+  outline: none;
+}
+.input {
+  background-color: #ffffff;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+}
+button {
+  appearance: none;
+  border: none;
+  background: none;
+  cursor: pointer;
 }
 .hourly-forecast__item {
   flex: 1;
 }
+
 .hourly-forecast {
   display: flex;
-  justify-content: center;
-  border: 1px solid black;
+  justify-content: space-between;
   padding: 10px;
   text-align: center;
 }
 
-.daily-forecast {
-  border: 1px solid black;
+tr:first-child {
+  border-top: 1px dotted grey;
 }
-tr {
+
+tr:not(:last-child) {
   border-bottom: 1px dotted grey;
 }
+
 .daily-forecast__item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px;
 }
+
 .daily-forecast__item * {
   flex: 1;
 }
-/* .daily-forecast__item *:last-child {
-  text-align: end;
-} */
+
 .hourly-forecast__time {
   padding: 0 5px;
 }
@@ -89,7 +144,7 @@ tr {
 
 .daily-forecast__temps {
   display: flex;
-  justify-content: center;
+  justify-content: space;
   gap: 10px;
   text-align: end;
 }
