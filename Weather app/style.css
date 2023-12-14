@@ -112,17 +112,27 @@ tr:first-child {
   border-top: 1px dotted grey;
 }
 
-tr:not(:last-child) {
+/* tr:not(:last-child) {
   border-bottom: 1px dotted grey;
+} */
+.last-item {
+  height: 0;
+  overflow-y: hidden;
 }
-
+p {
+  margin: 0;
+  padding: 0 10px;
+}
 .daily-forecast__item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px;
+  cursor: pointer;
 }
-
+.last-item {
+  flex: 1;
+}
 .daily-forecast__item * {
   flex: 1;
 }
