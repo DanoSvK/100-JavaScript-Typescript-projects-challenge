@@ -25,6 +25,8 @@ const currTempValueEl = document.querySelector(".current-forecast__temp");
 const currWeatherTypeEL = document.querySelector(".current-forecast__weather");
 const errorMsg = document.querySelector(".error-message");
 const btn = document.querySelector("button");
+const dailyForecastEl = document.querySelector("daily-forecast");
+
 let city = document.querySelector("input");
 
 class WeatherApp {
@@ -37,7 +39,22 @@ class WeatherApp {
       this.searchCurrentWeather(city.value);
       this.searchThreeHourForecast(city.value);
     });
+    dailyForecast.addEventListener("click", (e) => {
+      this.testFn(e);
+    });
   }
+
+  testFn = (e) => {
+    if (!e.target.closest(".daily-forecast__item")) return;
+
+    let items = document.querySelectorAll(".last-item");
+
+    items.forEach((item) => {
+      item.style.height = "0";
+    });
+    e.target.closest(".daily-forecast__item").nextElementSibling.style.height =
+      "100%";
+  };
 
   // Geolocation API
   getPosition = () => {
@@ -96,6 +113,7 @@ class WeatherApp {
       // Get data
       const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,hourly,minutely,alerts&units=metric&appid=${apiKey}`;
       const data = await fetchURL(url);
+      console.log(data);
       // Render markup
       let html;
       data.daily.map((_, i) => {
@@ -233,7 +251,14 @@ class WeatherApp {
             <td><div class="daily-forecast__temps">
           <p class="temp-high">${Math.round(arr.temp.max)}°C</p>
           <p class="temp-low">${Math.round(arr.temp.min)}°C</p>
-          </div> </td>
+          </div></td>
+          <div class="last-item"><p>The weather today is mainly ${
+            arr.weather[0].description
+          } with max temperature of ${Math.round(
+      arr.temp.max
+    )}°C and lowest temperature of ${Math.round(
+      arr.temp.min
+    )}°C. You can expect wind speed of ${arr.wind_speed} m/s.</p></div>
         </tr>`;
   };
 }
