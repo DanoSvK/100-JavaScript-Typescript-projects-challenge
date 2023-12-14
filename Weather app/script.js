@@ -117,7 +117,7 @@ class WeatherApp {
       // Render markup
       let html;
       data.daily.map((_, i) => {
-        html = this.fiveDaysForecastMarkup(data.daily[i]);
+        html = this.sevenDaysForecast(data.daily[i]);
         dailyForecast.insertAdjacentHTML("beforeend", html);
       });
     } catch {
@@ -199,7 +199,7 @@ class WeatherApp {
       let html;
       dailyForecast.innerHTML = "";
       data.daily.map((_, i) => {
-        html = this.fiveDaysForecastMarkup(data.daily[i]);
+        html = this.sevenDaysForecast(data.daily[i]);
         dailyForecast.insertAdjacentHTML("beforeend", html);
       });
     } catch (err) {
@@ -223,7 +223,7 @@ class WeatherApp {
     </div>`;
   };
 
-  fiveDaysForecastMarkup = (arr) => {
+  sevenDaysForecast = (arr) => {
     const day = getDay(arr);
     return `
     <tr class="daily-forecast__item">
