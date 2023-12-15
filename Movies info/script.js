@@ -23,7 +23,7 @@ class MovieApp {
   getData = async () => {
     try {
       // Fetching data
-      const apiKey = "3ede7446";
+      const apiKey = "Enter_Your_Api_Key";
       const movieTitle = movieTitleEl.value;
       const res = await fetch(
         `https://www.omdbapi.com/?apikey=${apiKey}&t=${movieTitle}`
