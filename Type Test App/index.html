@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.css" />
+    <script defer src="./script.js"></script>
+    <title>Type Test App</title>
+  </head>
+  <body>
+    <section class="app">
+      <div class="performance">
+        <p class="time">Time: <span class="time-count">0</span>s</p>
+        <p class="mistakes">Mistakes: <span class="mistake-count">0</span></p>
+      </div>
+      <div class="quote">
+        <p class="quote-text"></p>
+      </div>
+      <textarea
+        name="quote-input"
+        id="quote-input"
+        cols="30"
+        rows="10"
+        placeholder="Type here..."
+      ></textarea>
+      <button class="start-btn btn active">Start Test</button>
+      <button class="stop-btn btn">Stop Test</button>
+    </section>
+  </body>
+</html>
