@@ -1,0 +1,1 @@
+To make the app work, visit this page (https://www.omdbapi.com/apikey.aspx), select free option, enter your email address and click Submit. You will recieve your API key with a verification ink. Click the link to verify and then use the API key from the email in main script.ts file in apiKey variable.
