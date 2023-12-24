@@ -1,36 +1,38 @@
-const buttons = document.querySelectorAll(".option-button");
-const text = document.querySelector(".text");
-const scriptButtons = document.querySelectorAll(".script");
-const alignButtons = document.querySelectorAll(".align");
-const spacingButtons = document.querySelectorAll(".spacing");
-const formatButtons = document.querySelectorAll(".format");
-const fontButton = document.getElementById("fontName");
-const fontSizeButton = document.getElementById("fontSize");
-const fontColorButton = document.getElementById("fontColor");
-const undoButton = document.getElementById("undo");
-const redoButton = document.getElementById("redo");
-const fontWrapper = document.querySelector(".font");
-const paragraphWrapper = document.querySelector(".paragraph");
+const buttons = document.querySelectorAll(".option-button")!;
+const iFrameElement = document.querySelector(".text") as HTMLIFrameElement;
+const scriptButtons = document.querySelectorAll(".script")!;
+const alignButtons = document.querySelectorAll(".align")!;
+const spacingButtons = document.querySelectorAll(".spacing")!;
+const formatButtons = document.querySelectorAll(".format")!;
+const fontButton = document.getElementById("fontName")!;
+const fontSizeButton = document.getElementById("fontSize")!;
+const fontColorButton = document.getElementById("fontColor")!;
+const undoButton = document.getElementById("undo")!;
+const redoButton = document.getElementById("redo")!;
+const fontWrapper = document.querySelector(".font")!;
+const paragraphWrapper = document.querySelector(".paragraph")!;
 
-document.querySelector(".font-wrapper").addEventListener("click", () => {
+document.querySelector(".font-wrapper")?.addEventListener("click", () => {
   paragraphWrapper.classList.remove("mobile-active");
   fontWrapper.classList.add("mobile-active");
 });
 
-document.querySelector(".paragraph-wrapper").addEventListener("click", () => {
+document.querySelector(".paragraph-wrapper")!.addEventListener("click", () => {
   fontWrapper.classList.remove("mobile-active");
   paragraphWrapper.classList.add("mobile-active");
 });
 
-text.addEventListener("load", function () {
+iFrameElement.addEventListener("load", function () {
   // This function will be executed when the iframe content has finished loading
-  var iframeWindow = text.contentWindow;
+  let iframeWindow = iFrameElement.contentWindow;
 
   // Attach your event listener to the window object of the iframe
-  iframeWindow.addEventListener("click", function (event) {
-    fontWrapper.classList.remove("mobile-active");
-    paragraphWrapper.classList.remove("mobile-active");
-  });
+  if (iframeWindow) {
+    iframeWindow.addEventListener("click", function (event) {
+      fontWrapper.classList.remove("mobile-active");
+      paragraphWrapper.classList.remove("mobile-active");
+    });
+  }
 });
 
 let show = false;
@@ -58,7 +60,7 @@ buttons.forEach((button) => {
   });
 });
 
-const highlighter = (className, needsRemoval) => {
+const highlighter = (className: Element[], needsRemoval: boolean) => {
   className.forEach((button) => {
     button.addEventListener("click", () => {
       if (needsRemoval) {

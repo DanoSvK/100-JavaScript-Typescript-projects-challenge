@@ -18,5 +18,14 @@ export const getMinutes = (arr) => {
 
 export const getDay = (data) => {
   const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  return days[new Date(data.dt * 1000).getDay()];
+  if (new Date(data.dt * 1000).getDay() == new Date(Date.now()).getDay()) {
+    return "Today";
+  } else if (
+    new Date(data.dt * 1000).getDay() ==
+    new Date(Date.now()).getDay() + 1
+  ) {
+    return "Tomorrow";
+  } else {
+    return days[new Date(data.dt * 1000).getDay()];
+  }
 };

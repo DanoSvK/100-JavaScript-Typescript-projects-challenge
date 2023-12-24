@@ -1,9 +1,9 @@
-const batteryIndicator = document.querySelector(".current-battery");
-const batteryStateMessage = document.querySelector(".state");
-const batteryStatus = document.querySelector(".battery-indicator");
-const batteryPercentageIndicator = document.querySelector(
-  ".battery-percentage"
-);
+const batteryIndicator = document.querySelector(".current-battery") as HTMLDivElement;
+const batteryStateMessage = document.querySelector(".state")!;
+const batteryStatus = document.querySelector(".battery-indicator") as HTMLDivElement;
+// prettier-ignore
+const batteryPercentageIndicator = document.querySelector(".battery-percentage")!;
+
 let batteryIsCharging = false;
 const veryLowBattery = 10;
 const lowBattery = 25;
@@ -11,6 +11,7 @@ const middleBattery = 50;
 const highBattery = 75;
 const fullBattery = 100;
 const percentage = 100;
+
 // navigator.getBattery().then((battery) => {
 //   batteryIsCharging = battery.charging;
 
@@ -19,6 +20,7 @@ const percentage = 100;
 //     console.log(batteryIsCharging);
 //   });
 // });
+
 // Helper functions
 const handleBatteryColor = (battery) => {
   const batteryLevel = battery.level * percentage;
