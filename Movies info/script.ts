@@ -20,9 +20,8 @@ interface Data {
 }
 
 class MovieApp {
-  genres: [];
+  genres: [] = [];
   
-
   constructor() {
     searchBtn.addEventListener("click", () => {
       this.getData();
@@ -35,7 +34,7 @@ class MovieApp {
     });
   }
 
-  getData = async (): Promise<void> => {
+  getData = async() => {
     try {
       // Fetching data
       const apiKey = "Enter_Your_Api_Key";
