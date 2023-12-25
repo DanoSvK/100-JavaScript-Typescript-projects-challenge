@@ -1,0 +1,46 @@
+body,
+html {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  min-height: 90vh;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+select {
+  padding: 5px;
+}
+.app {
+  width: 690px;
+}
+textarea {
+  width: 100%;
+  resize: none;
+  height: 250px;
+  border-color: #ccc;
+}
+
+.options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.option {
+  flex-grow: 1; /* Each .option will grow equally within the .options container */
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+@media (min-width: 600px) {
+  .windows {
+    display: flex;
+  }
+}
