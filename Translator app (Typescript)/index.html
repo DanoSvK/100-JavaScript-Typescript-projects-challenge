@@ -14,7 +14,13 @@
     <title>Document</title>
   </head>
   <body>
+    <div class="error-message">Copied to clipboard</div>
     <section class="app">
+      <div class="settings">
+        <select class="from-country"></select>
+        <i class="fas fa-exchange-alt exchange"></i>
+        <select class="to-country"></select>
+      </div>
       <div class="windows">
         <textarea
           class="from"
@@ -25,22 +31,25 @@
           class="to"
           placeholder="Translation"
           cols="30"
-          rows="10"></textarea>
+          rows="10"
+          disabled></textarea>
       </div>
       <div class="options">
         <div class="from-text-options option">
-          <i id="from" class="fas fa-volume-up"></i>
-          <i id="from" class="fas fa-copy"></i>
-          <select class="from-country"></select>
+          <i id="from" class="fas fa-volume-up sound-from"></i>
+          <div class="btn-copy-to">
+            <i id="from" class="fas fa-copy"></i>
+          </div>
         </div>
-        <i class="fas fa-exchange-alt"></i>
+
         <div class="from-text-options option">
-          <i id="from" class="fas fa-volume-up"></i>
-          <i id="from" class="fas fa-copy"></i>
-          <select class="to-country"></select>
+          <i id="from" class="fas fa-volume-up sound-to"></i>
+          <div class="btn-copy-from">
+            <i id="from" class="fas fa-copy"></i>
+          </div>
         </div>
       </div>
-      <button class="btn">Translate</button>
+      <!-- <button class="btn">Translate</button> -->
     </section>
   </body>
 </html>
