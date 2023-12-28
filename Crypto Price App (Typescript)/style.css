@@ -1,0 +1,54 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #161824;
+  color: #ffffff;
+}
+
+.coin {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+img {
+  width: 30px;
+  height: 30px;
+}
+
+.basic-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.price {
+  place-self: end;
+  align-self: center;
+  justify-self: center;
+}
+
+.price-change {
+  place-self: end;
+  align-self: center;
+  justify-self: center;
+}
+
+.price-change-increase {
+  color: green;
+}
+
+.price-change-decrease {
+  color: red;
+}
