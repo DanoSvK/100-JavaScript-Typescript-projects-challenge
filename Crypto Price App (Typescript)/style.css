@@ -8,18 +8,45 @@ body {
   padding: 0;
 }
 
+button {
+  appearance: none;
+  border: none;
+  background: none;
+  color: white;
+  padding: 0;
+}
+
 body {
+  height: 90vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   align-items: center;
   background-color: #161824;
   color: #ffffff;
+  padding: 1rem;
+}
+
+.list {
+  width: 100%;
+}
+
+.btn {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .coin {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
+}
+
+.buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
 img {
@@ -42,7 +69,7 @@ img {
 .price-change {
   place-self: end;
   align-self: center;
-  justify-self: center;
+  justify-self: end;
 }
 
 .price-change-increase {
@@ -51,4 +78,30 @@ img {
 
 .price-change-decrease {
   color: red;
+}
+
+span {
+  display: inline-block;
+}
+
+.inactive {
+  opacity: 0;
+}
+
+.rotate-arrow {
+  transform: rotate(0deg) !important;
+}
+
+.pagination {
+  display: flex;
+  gap: 1rem;
+}
+
+@media (min-width: 600px) {
+  .buttons {
+    width: 580px;
+  }
+  .list {
+    width: 580px;
+  }
 }
