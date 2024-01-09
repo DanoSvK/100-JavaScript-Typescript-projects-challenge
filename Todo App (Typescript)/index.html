@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap"
+      rel="stylesheet" />
+    <link rel="stylesheet" href="./style.css" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script defer src="./script.js"></script>
+    <title>Todo list app</title>
+  </head>
+  <body>
+    <main>
+      <section class="bar">
+        <h1 class="logo">Todo</h1>
+        <button class="btn dark" name="theme_switch" id="switch"></button>
+      </section>
+
+      <section class="container">
+        <form class="form">
+          <div class="form__top-list">
+            <input class="form__top-list__checkbox" type="submit" value="" />
+            <input
+              class="form__top-list__textarea"
+              placeholder="Create a new todo..." />
+          </div>
+        </form>
+
+        <div class="middle-list">
+          <p class="middle-list__empty">Task list is empty!</p>
+        </div>
+
+        <div class="footer">
+          <p class="footer__grid-1">
+            <span class="footer__counter"></span>
+          </p>
+          <p class="footer__text footer__grid-2">Clear Completed</p>
+          <div class="bottom-list footer__grid-3">
+            <p class="state bottom-list__all active-btn">All</p>
+            <p class="state bottom-list__active">Active</p>
+            <p class="state bottom-list__completed">Completed</p>
+          </div>
+        </div>
+        <p class="note">Drag and drop to reorder list</p>
+      </section>
+    </main>
+  </body>
+</html>
