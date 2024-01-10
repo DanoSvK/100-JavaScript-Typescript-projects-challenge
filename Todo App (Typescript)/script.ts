@@ -22,6 +22,9 @@ const submit = document.querySelector(
 const states = document.querySelectorAll(
   ".state"
 ) as NodeListOf<HTMLParagraphElement>;
+const clearAllBtn = document.querySelector(
+  ".clear-all"
+) as HTMLParagraphElement;
 
 const themeToggle = (theme: string): void => {
   document.documentElement.setAttribute("data-theme", `${theme}`);
@@ -78,8 +81,9 @@ function updateCounter(): void {
 
 // Function to add a new item
 function addItemToDOM(text: string): void {
+  const timestampId = new Date().getTime();
   const html = `
-    <div class="middle-list__item active" draggable="true">
+    <div class="middle-list__item active" draggable="true" data-id="${timestampId}">
       <div class="middle-list__item--text">
         <input class="checkbox" type="checkbox" />
         <p class="middle-list__text">${text}</p>
@@ -104,10 +108,22 @@ submit.addEventListener("click", (e: Event): void => {
 // Event listener for delete button
 list.addEventListener("click", (e: Event): void => {
   if ((e.target as HTMLElement).classList.contains("cross")) {
-    (e.target as HTMLElement).closest(".middle-list__item")?.remove();
-    saveItemsToStorage();
-    updateCounter();
+    const item = (e.target as HTMLElement).closest(".middle-list__item");
+    const itemId = item?.getAttribute("data-id");
+    if (itemId) {
+      item?.remove();
+      saveItemsToStorage();
+      updateCounter();
+    }
   }
+});
+
+clearAllBtn.addEventListener("click", (): void => {
+  document.querySelectorAll(".middle-list__item").forEach((item) => {
+    item?.remove();
+  });
+  saveItemsToStorage();
+  updateCounter();
 });
 
 // Event listener for checkbox
@@ -125,15 +141,6 @@ list.addEventListener("change", (e: Event): void => {
 // Event listener for drag and drop
 list.addEventListener("dragend", (): void => {
   saveItemsToStorage();
-});
-
-// Event listener for "Delete All Completed" button
-deleteAllCompleted.addEventListener("click", (): void => {
-  document.querySelectorAll(".middle-list__item.completed").forEach((item) => {
-    item.remove();
-  });
-  saveItemsToStorage();
-  updateCounter();
 });
 
 // Initial load from local storage and update counter
