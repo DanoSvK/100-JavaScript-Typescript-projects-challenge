@@ -1,0 +1,43 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+body {
+  width: 100%;
+  height: 100svh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #9bba5a;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(15, 1fr);
+  grid-template-rows: repeat(15, 1fr);
+  position: relative;
+  height: 500px;
+  width: 600px;
+  border: 4px solid rgba(0, 0, 0, 0.75);
+}
+
+/* .snake {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #ffffff;
+  top: 0;
+  left: 0;
+} */
+
+.item {
+  border: 1px solid black;
+  grid-column-start: 2;
+  grid-row-start: 2;
+}
+
+.white {
+  background-color: #ffffff;
+  border: 1px solid #ffffff;
+}
