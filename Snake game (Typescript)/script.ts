@@ -3,14 +3,10 @@ const board = document.querySelector(".wrapper") as HTMLDivElement;
 
 let lastRenderTime = 0;
 let snakeSpeed = 1;
+let inputDirection = { x: 0, y: 0 };
+let lastInputDirection = { x: 0, y: 0 };
 const isGameOver = false;
-const snakeBody = [
-  { x: 8, y: 9 },
-  { x: 9, y: 9 },
-  { x: 10, y: 9 },
-  { x: 11, y: 9 },
-  { x: 12, y: 9 },
-];
+const snakeBody = [{ x: 8, y: 9 }];
 
 const main = (currentTime: number): void => {
   window.requestAnimationFrame(main);
@@ -25,7 +21,13 @@ const main = (currentTime: number): void => {
 
 window.requestAnimationFrame(main);
 
+const getInputDirection = () => {
+  lastInputDirection = inputDirection;
+  return inputDirection;
+};
+
 const update = () => {
+  inputDirection = getInputDirection();
   if (snakeBody[0].y >= 15) {
     return;
   }
@@ -33,8 +35,8 @@ const update = () => {
     snakeBody[i + 1] = { ...snakeBody[i] };
   }
 
-  snakeBody[0].x += 0;
-  snakeBody[0].y += 1;
+  snakeBody[0].x += inputDirection.x;
+  snakeBody[0].y += inputDirection.y;
 };
 
 const draw = (gameBoard: HTMLDivElement) => {
@@ -47,3 +49,24 @@ const draw = (gameBoard: HTMLDivElement) => {
     gameBoard.appendChild(snakeElement);
   });
 };
+
+window.addEventListener("keydown", (e: KeyboardEvent) => {
+  switch (e.key) {
+    case "ArrowUp":
+      if (lastInputDirection.y !== 0) break;
+      inputDirection = { x: 0, y: -1 };
+      break;
+    case "ArrowDown":
+      if (lastInputDirection.y !== 0) break;
+      inputDirection = { x: 0, y: 1 };
+      break;
+    case "ArrowRight":
+      if (lastInputDirection.x !== 0) break;
+      inputDirection = { x: 1, y: 0 };
+      break;
+    case "ArrowLeft":
+      if (lastInputDirection.x !== 0) break;
+      inputDirection = { x: -1, y: 0 };
+      break;
+  }
+});
