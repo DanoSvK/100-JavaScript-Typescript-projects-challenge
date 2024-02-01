@@ -6,7 +6,7 @@ let snakeSpeed = 1;
 let inputDirection = { x: 0, y: 0 };
 let lastInputDirection = { x: 0, y: 0 };
 const isGameOver = false;
-const snakeBody = [{ x: 8, y: 9 }];
+const snakeBody = [{ x: 8, y: 8 }];
 
 const main = (currentTime: number): void => {
   window.requestAnimationFrame(main);
@@ -28,7 +28,14 @@ const getInputDirection = () => {
 
 const update = () => {
   inputDirection = getInputDirection();
-  if (snakeBody[0].y >= 15) {
+
+  if (
+    snakeBody[0].y >= 15 ||
+    snakeBody[0].y <= 1 ||
+    snakeBody[0].x >= 15 ||
+    snakeBody[0].x <= 1
+  ) {
+    console.log("Game over!");
     return;
   }
   for (let i = snakeBody.length - 2; i >= 0; i--) {
