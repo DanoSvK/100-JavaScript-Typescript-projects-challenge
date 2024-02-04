@@ -22,22 +22,20 @@ body {
   border: 4px solid rgba(0, 0, 0, 0.75);
 }
 
-/* .snake {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  background-color: #ffffff;
-  top: 0;
-  left: 0;
-} */
-
 .item {
   border: 1px solid black;
   grid-column-start: 2;
   grid-row-start: 2;
 }
 
-.white {
-  background-color: #ffffff;
-  border: 1px solid #ffffff;
+.snake {
+  background-color: #2b331a;
+  border-radius: 10px;
+}
+
+.food {
+  background-color: #2b331a;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
 }
