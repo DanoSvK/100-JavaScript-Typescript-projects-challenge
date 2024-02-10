@@ -57,20 +57,6 @@ btn.addEventListener("click", (): void => {
   switcher = switcher === 0 ? 1 : 0;
 });
 
-// Load data from local storage
-function loadItemsFromStorage(): void {
-  const storedItems = localStorage.getItem("todoItems");
-  if (storedItems) {
-    list.innerHTML = storedItems;
-    updateCounter();
-  }
-}
-
-// Save data to local storage
-function saveItemsToStorage(): void {
-  localStorage.setItem("todoItems", list.innerHTML);
-}
-
 // Update counter based on the number of items
 function updateCounter(): void {
   const itemCount = document.querySelectorAll(".middle-list__item").length;
@@ -79,38 +65,14 @@ function updateCounter(): void {
   } left`;
 }
 
-// Function to add a new item
-function addItemToDOM(text: string): void {
-  const timestampId = new Date().getTime();
-  const html = `
-    <div class="middle-list__item active" draggable="true" data-id="${timestampId}">
-      <div class="middle-list__item--text">
-        <input class="checkbox" type="checkbox" />
-        <p class="middle-list__text">${text}</p>
-      </div>
-      <img class="cross" src="./images/icon-cross.svg" alt="" />
-    </div>`;
-  list.innerHTML += html;
-}
-
-// Event listener for form submission
-submit.addEventListener("click", (e: Event): void => {
-  e.preventDefault();
-  const newItemText = addItem.value.trim();
-  if (newItemText !== "") {
-    addItemToDOM(newItemText);
-    saveItemsToStorage();
-    addItem.value = ""; // Clear the input field
-    updateCounter();
-  }
-});
-
 // Event listener for delete button
 list.addEventListener("click", (e: Event): void => {
   if ((e.target as HTMLElement).classList.contains("cross")) {
     const item = (e.target as HTMLElement).closest(".middle-list__item");
     const itemId = item?.getAttribute("data-id");
     if (itemId) {
+      const index = items.map((item) => item.id).indexOf(+itemId);
+      items.splice(index, 1);
       item?.remove();
       saveItemsToStorage();
       updateCounter();
@@ -122,30 +84,10 @@ clearAllBtn.addEventListener("click", (): void => {
   document.querySelectorAll(".middle-list__item").forEach((item) => {
     item?.remove();
   });
+  items.length = 0;
   saveItemsToStorage();
   updateCounter();
 });
-
-// Event listener for checkbox
-list.addEventListener("change", (e: Event): void => {
-  if ((e.target as HTMLElement).classList.contains("checkbox")) {
-    const itemText = (e.target as HTMLElement).nextElementSibling?.textContent;
-    (e.target as HTMLElement)
-      .closest(".middle-list__item")
-      ?.classList.toggle("completed");
-    saveItemsToStorage();
-    updateCounter();
-  }
-});
-
-// Event listener for drag and drop
-list.addEventListener("dragend", (): void => {
-  saveItemsToStorage();
-});
-
-// Initial load from local storage and update counter
-loadItemsFromStorage();
-updateCounter();
 
 states.forEach((state) =>
   state.addEventListener("click", (): void => {
@@ -155,3 +97,69 @@ states.forEach((state) =>
     state.classList.add("active-btn");
   })
 );
+
+const saveItemsToStorage = (): void => {
+  localStorage.setItem("items", JSON.stringify(items));
+};
+
+interface Item {
+  text: string;
+  completed: boolean;
+  id: number;
+}
+
+const items: Item[] = JSON.parse(localStorage.getItem("items") || "[]");
+
+submit.addEventListener("click", (e: Event) => {
+  e.preventDefault();
+  const newItem: Item = {
+    text: addItem.value,
+    completed: false,
+    id: new Date().getTime(),
+  };
+
+  createItem(newItem);
+  items.push(newItem);
+
+  saveItemsToStorage();
+  addItem.value = "";
+});
+
+const createItem = (item: Item) => {
+  // Creating main item wrapper
+  const mainWrapper = document.createElement("div");
+  mainWrapper.classList.add("middle-list__item", "active");
+  mainWrapper.draggable = true;
+  mainWrapper.dataset.id = `${item.id}`;
+  list.appendChild(mainWrapper);
+
+  // Creating text wrapper of the item
+  const textWrapper = document.createElement("div");
+  textWrapper.classList.add("middle-list__item--text");
+  mainWrapper.appendChild(textWrapper);
+
+  // Creating checkbox element
+  const checkbox = document.createElement("input");
+  checkbox.classList.add("checkbox");
+  checkbox.type = "checkbox";
+  checkbox.checked = item.completed;
+  checkbox.addEventListener("change", () => {
+    item.completed = checkbox.checked;
+    saveItemsToStorage();
+  });
+
+  textWrapper.appendChild(checkbox);
+
+  // Creating p element for the text of the item
+  const textElement = document.createElement("p");
+  textElement.classList.add("middle-list__text");
+  textElement.textContent = `${item.text}`;
+  textWrapper.appendChild(textElement);
+
+  // Adding image
+  const imgElement = document.createElement("img");
+  imgElement.classList.add("cross");
+  imgElement.src = "./images/icon-cross.svg";
+  mainWrapper.appendChild(imgElement);
+};
+items.forEach((item) => createItem(item));
