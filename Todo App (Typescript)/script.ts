@@ -180,15 +180,15 @@ const changeState = (e: Event, removeClass: string, addClass: string): void => {
 };
 
 list.addEventListener("click", (e: Event) => {
-  const item = (e.target as HTMLInputElement).classList.contains("checkbox");
-  const completed = (e.target as HTMLInputElement).closest(
-    ".middle-list__item"
+  const checkbox = (e.target as HTMLInputElement).classList.contains(
+    "checkbox"
   );
-  if (completed) {
-    const completedItem = completed.classList.contains("completed");
-    if (item && completedItem) {
+  const item = (e.target as HTMLInputElement).closest(".middle-list__item");
+  if (item) {
+    const completedItem = item.classList.contains("completed");
+    if (checkbox && completedItem) {
       changeState(e, "completed", "active");
-    } else if (item && !completed) {
+    } else if (checkbox && !completedItem) {
       changeState(e, "active", "completed");
     }
   }
