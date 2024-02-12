@@ -171,29 +171,30 @@ clearAllBtn.addEventListener("click", (): void => {
 
 // Change states in real time by toggling classes
 const changeState = (e: Event, removeClass: string, addClass: string): void => {
-  (e.target as HTMLInputElement)
-    .closest(".middle-list__item")
-    ?.classList.remove(removeClass);
+  const target = (e.target as HTMLInputElement).closest(".middle-list__item");
 
-  (e.target as HTMLInputElement)
-    .closest(".middle-list__item")
-    ?.classList.add(addClass);
+  if (target) {
+    target.classList.add(addClass);
+    target.classList.remove(removeClass);
+  }
 };
 
 list.addEventListener("click", (e: Event) => {
   const item = (e.target as HTMLInputElement).classList.contains("checkbox");
-  const completed = (e.target as HTMLInputElement)
-    .closest(".middle-list__item")
-    ?.classList.contains("completed");
-
-  if (item && completed) {
-    changeState(e, "completed", "active");
-  } else if (item && !completed) {
-    changeState(e, "active", "completed");
+  const completed = (e.target as HTMLInputElement).closest(
+    ".middle-list__item"
+  );
+  if (completed) {
+    const completedItem = completed.classList.contains("completed");
+    if (item && completedItem) {
+      changeState(e, "completed", "active");
+    } else if (item && !completed) {
+      changeState(e, "active", "completed");
+    }
   }
 });
 
-// Display/hide items based on class
+// Display|hide items based on class
 const toggleItemsVisibility = (stateClass: string, display: string): void => {
   const state = document.querySelectorAll(stateClass) as NodeListOf<HTMLDivElement>; // prettier-ignore
   state.forEach((item) => (item.style.display = display));
