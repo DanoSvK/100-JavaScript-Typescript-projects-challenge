@@ -2,29 +2,17 @@ let checkbox = document.querySelector("input[name=theme_switch]");
 const btn = document.querySelector(".btn") as HTMLButtonElement;
 const form = document.querySelector(".form") as HTMLFormElement;
 const list = document.querySelector(".middle-list") as HTMLDivElement;
-const addItem = document.querySelector(
-  ".form__top-list__textarea"
-) as HTMLInputElement;
+const addItem = document.querySelector(".form__top-list__textarea") as HTMLInputElement; // prettier-ignore
 const counter = document.querySelector(".footer__counter") as HTMLSpanElement;
-const deleteAllCompleted = document.querySelector(
-  ".footer__text"
-) as HTMLParagraphElement;
+const deleteAllCompleted = document.querySelector(".footer__text") as HTMLParagraphElement; // prettier-ignore
 const all = document.querySelector(".bottom-list__all") as HTMLParagraphElement;
-const active = document.querySelector(
-  ".bottom-list__active"
-) as HTMLParagraphElement;
-const completed = document.querySelector(
-  ".bottom-list__completed"
-) as HTMLParagraphElement;
-const submit = document.querySelector(
-  ".form__top-list__checkbox"
-) as HTMLInputElement;
-const states = document.querySelectorAll(
-  ".state"
-) as NodeListOf<HTMLParagraphElement>;
-const clearAllBtn = document.querySelector(
-  ".clear-all"
-) as HTMLParagraphElement;
+const active = document.querySelector(".bottom-list__active") as HTMLParagraphElement; // prettier-ignore
+const completed = document.querySelector(".bottom-list__completed") as HTMLParagraphElement; // prettier-ignore
+const submit = document.querySelector(".form__top-list__checkbox") as HTMLInputElement; // prettier-ignore
+const states = document.querySelectorAll(".state") as NodeListOf<HTMLParagraphElement>; // prettier-ignore
+const clearAllBtn = document.querySelector(".clear-all") as HTMLParagraphElement; // prettier-ignore
+
+let switcher: number;
 
 const themeToggle = (theme: string): void => {
   document.documentElement.setAttribute("data-theme", `${theme}`);
@@ -36,7 +24,6 @@ const themeToggle = (theme: string): void => {
 
 // Dark/light mode switcher
 // Recognize default mode
-let switcher: number;
 function colorThemeRecognizer() {
   if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
     themeToggle("dark");
@@ -57,38 +44,6 @@ btn.addEventListener("click", (): void => {
   switcher = switcher === 0 ? 1 : 0;
 });
 
-// Update counter based on the number of items
-function updateCounter(): void {
-  const itemCount = document.querySelectorAll(".middle-list__item").length;
-  counter.textContent = `${itemCount} ${
-    itemCount === 1 ? "item" : "items"
-  } left`;
-}
-
-// Event listener for delete button
-list.addEventListener("click", (e: Event): void => {
-  if ((e.target as HTMLElement).classList.contains("cross")) {
-    const item = (e.target as HTMLElement).closest(".middle-list__item");
-    const itemId = item?.getAttribute("data-id");
-    if (itemId) {
-      const index = items.map((item) => item.id).indexOf(+itemId);
-      items.splice(index, 1);
-      item?.remove();
-      saveItemsToStorage();
-      updateCounter();
-    }
-  }
-});
-
-clearAllBtn.addEventListener("click", (): void => {
-  document.querySelectorAll(".middle-list__item").forEach((item) => {
-    item?.remove();
-  });
-  items.length = 0;
-  saveItemsToStorage();
-  updateCounter();
-});
-
 states.forEach((state) =>
   state.addEventListener("click", (): void => {
     for (let i = 0; i < states.length; i++) {
@@ -98,37 +53,41 @@ states.forEach((state) =>
   })
 );
 
+// Handling local storage
 const saveItemsToStorage = (): void => {
-  localStorage.setItem("items", JSON.stringify(items));
+  localStorage.setItem("items", JSON.stringify(allItems));
 };
 
 interface Item {
   text: string;
   completed: boolean;
+  class: string;
   id: number;
 }
 
-const items: Item[] = JSON.parse(localStorage.getItem("items") || "[]");
+const allItems: Item[] = JSON.parse(localStorage.getItem("items") || "[]");
 
 submit.addEventListener("click", (e: Event) => {
   e.preventDefault();
   const newItem: Item = {
     text: addItem.value,
     completed: false,
+    class: "active",
     id: new Date().getTime(),
   };
 
   createItem(newItem);
-  items.push(newItem);
-
+  allItems.push(newItem);
   saveItemsToStorage();
   addItem.value = "";
 });
 
+// Handling items creation
 const createItem = (item: Item) => {
   // Creating main item wrapper
   const mainWrapper = document.createElement("div");
-  mainWrapper.classList.add("middle-list__item", "active");
+  mainWrapper.classList.add("middle-list__item");
+  mainWrapper.classList.add(`${item.class}`);
   mainWrapper.draggable = true;
   mainWrapper.dataset.id = `${item.id}`;
   list.appendChild(mainWrapper);
@@ -145,6 +104,11 @@ const createItem = (item: Item) => {
   checkbox.checked = item.completed;
   checkbox.addEventListener("change", () => {
     item.completed = checkbox.checked;
+    if (checkbox.checked) {
+      item.class = "completed";
+    } else {
+      item.class = "active";
+    }
     saveItemsToStorage();
   });
 
@@ -162,4 +126,90 @@ const createItem = (item: Item) => {
   imgElement.src = "./images/icon-cross.svg";
   mainWrapper.appendChild(imgElement);
 };
-items.forEach((item) => createItem(item));
+
+// Recreate items from local storage on page load
+window.addEventListener("load", () => {
+  allItems.forEach((item) => createItem(item));
+});
+
+// Update counter based on the number of items
+function updateCounter(): void {
+  const itemCount = allItems.length;
+  counter.textContent = `${itemCount} ${
+    itemCount === 1 ? "item" : "items"
+  } left`;
+  console.log(itemCount);
+}
+updateCounter();
+
+// Handling buttons
+
+// Delete item
+list.addEventListener("click", (e: Event): void => {
+  if ((e.target as HTMLElement).classList.contains("cross")) {
+    const item = (e.target as HTMLElement).closest(".middle-list__item");
+    const itemId = item?.getAttribute("data-id");
+    if (itemId) {
+      const index = allItems.map((item) => item.id).indexOf(+itemId);
+      allItems.splice(index, 1);
+      item?.remove();
+      saveItemsToStorage();
+      updateCounter();
+    }
+  }
+});
+
+// Delete all items
+clearAllBtn.addEventListener("click", (): void => {
+  document.querySelectorAll(".middle-list__item").forEach((item) => {
+    item?.remove();
+  });
+  allItems.length = 0;
+  saveItemsToStorage();
+  updateCounter();
+});
+
+// Change states in real time by toggling classes
+const changeState = (e: Event, removeClass: string, addClass: string): void => {
+  (e.target as HTMLInputElement)
+    .closest(".middle-list__item")
+    ?.classList.remove(removeClass);
+
+  (e.target as HTMLInputElement)
+    .closest(".middle-list__item")
+    ?.classList.add(addClass);
+};
+
+list.addEventListener("click", (e: Event) => {
+  const item = (e.target as HTMLInputElement).classList.contains("checkbox");
+  const completed = (e.target as HTMLInputElement)
+    .closest(".middle-list__item")
+    ?.classList.contains("completed");
+
+  if (item && completed) {
+    changeState(e, "completed", "active");
+  } else if (item && !completed) {
+    changeState(e, "active", "completed");
+  }
+});
+
+// Display/hide items based on class
+const toggleItemsVisibility = (stateClass: string, display: string): void => {
+  const state = document.querySelectorAll(stateClass) as NodeListOf<HTMLDivElement>; // prettier-ignore
+  state.forEach((item) => (item.style.display = display));
+};
+
+active.addEventListener("click", () => {
+  toggleItemsVisibility(".active", "flex");
+  toggleItemsVisibility(".completed", "none");
+});
+
+completed.addEventListener("click", () => {
+  toggleItemsVisibility(".active", "none");
+  toggleItemsVisibility(".completed", "flex");
+});
+
+all.addEventListener("click", () => {
+  const allItems = document.querySelectorAll(".middle-list__item") as NodeListOf<HTMLDivElement>; // prettier-ignore
+  allItems.forEach((item) => (item.style.display = "flex"));
+});
