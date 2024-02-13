@@ -81,9 +81,19 @@ submit.addEventListener("click", (e: Event) => {
     updateCounter();
     allItems.push(newItem);
     saveItemsToStorage();
+    checkForItems();
     addItem.value = "";
   }
 });
+
+const checkForItems = (): void => {
+  const emptyListElement = document.querySelector('.middle-list__empty') as HTMLParagraphElement; // prettier-ignore
+  if (allItems.length === 0) {
+    emptyListElement.style.display = "block";
+  } else {
+    emptyListElement.style.display = "none";
+  }
+};
 
 // Handling items creation
 const createItem = (item: Item) => {
@@ -134,6 +144,7 @@ const createItem = (item: Item) => {
 window.addEventListener("load", () => {
   allItems.forEach((item) => createItem(item));
   updateCounter();
+  checkForItems();
 });
 
 // Update counter based on the number of items
@@ -159,6 +170,7 @@ list.addEventListener("click", (e: Event): void => {
       item?.remove();
       saveItemsToStorage();
       updateCounter();
+      checkForItems();
     }
   }
 });
@@ -171,6 +183,7 @@ deleteAllCompleted.addEventListener("click", (): void => {
       const index = allItems.map((item) => item.id).indexOf(+itemId);
       allItems.splice(index, 1);
       item?.remove();
+      checkForItems();
     }
   });
   saveItemsToStorage();
