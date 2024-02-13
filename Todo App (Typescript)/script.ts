@@ -69,17 +69,20 @@ const allItems: Item[] = JSON.parse(localStorage.getItem("items") || "[]");
 
 submit.addEventListener("click", (e: Event) => {
   e.preventDefault();
-  const newItem: Item = {
-    text: addItem.value,
-    completed: false,
-    class: "active",
-    id: new Date().getTime(),
-  };
+  if (addItem.value.trim() != "") {
+    const newItem: Item = {
+      text: addItem.value,
+      completed: false,
+      class: "active",
+      id: new Date().getTime(),
+    };
 
-  createItem(newItem);
-  allItems.push(newItem);
-  saveItemsToStorage();
-  addItem.value = "";
+    createItem(newItem);
+    updateCounter();
+    allItems.push(newItem);
+    saveItemsToStorage();
+    addItem.value = "";
+  }
 });
 
 // Handling items creation
@@ -130,15 +133,16 @@ const createItem = (item: Item) => {
 // Recreate items from local storage on page load
 window.addEventListener("load", () => {
   allItems.forEach((item) => createItem(item));
+  updateCounter();
 });
 
 // Update counter based on the number of items
 function updateCounter(): void {
-  const itemCount = allItems.length;
+  const allActive = document.querySelectorAll(".active") as NodeListOf<HTMLDivElement>; // prettier-ignore
+  const itemCount = allActive.length;
   counter.textContent = `${itemCount} ${
     itemCount === 1 ? "item" : "items"
   } left`;
-  console.log(itemCount);
 }
 updateCounter();
 
@@ -159,12 +163,16 @@ list.addEventListener("click", (e: Event): void => {
   }
 });
 
-// Delete all items
-clearAllBtn.addEventListener("click", (): void => {
+// Delete all completed items
+deleteAllCompleted.addEventListener("click", (): void => {
   document.querySelectorAll(".middle-list__item").forEach((item) => {
-    item?.remove();
+    const itemId = item?.getAttribute("data-id");
+    if (itemId && item.classList.contains("completed")) {
+      const index = allItems.map((item) => item.id).indexOf(+itemId);
+      allItems.splice(index, 1);
+      item?.remove();
+    }
   });
-  allItems.length = 0;
   saveItemsToStorage();
   updateCounter();
 });
@@ -177,6 +185,7 @@ const changeState = (e: Event, removeClass: string, addClass: string): void => {
     target.classList.add(addClass);
     target.classList.remove(removeClass);
   }
+  updateCounter();
 };
 
 list.addEventListener("click", (e: Event) => {
@@ -211,6 +220,38 @@ completed.addEventListener("click", () => {
 });
 
 all.addEventListener("click", () => {
-  const allItems = document.querySelectorAll(".middle-list__item") as NodeListOf<HTMLDivElement>; // prettier-ignore
-  allItems.forEach((item) => (item.style.display = "flex"));
+  const listItems = document.querySelectorAll(".middle-list__item") as NodeListOf<HTMLDivElement>; // prettier-ignore
+  listItems.forEach((item) => (item.style.display = "flex"));
+});
+
+// Drag and drop API
+let dragStart: HTMLDivElement;
+let dragEnd: HTMLDivElement;
+
+list.addEventListener("dragover", function (e) {
+  e.preventDefault();
+  if ((e.target as HTMLElement).classList.contains("middle-list__item")) {
+    (e.target as HTMLElement).style.opacity = "0.5";
+  }
+});
+
+list.addEventListener("dragleave", function (e) {
+  e.preventDefault();
+  if ((e.target as HTMLElement).classList.contains("middle-list__item")) {
+    (e.target as HTMLElement).style.opacity = "1";
+  }
+});
+
+list.addEventListener("dragstart", function (e) {
+  if ((e.target as HTMLElement).classList.contains("middle-list__item")) {
+    dragStart = e.target as HTMLDivElement;
+  }
+});
+
+list.addEventListener("drop", function (e) {
+  console.log(dragStart);
+  if ((e.target as HTMLElement).classList.contains("middle-list__item")) {
+    dragEnd = e.target as HTMLDivElement;
+    list.insertBefore(dragStart, dragEnd);
+  }
 });
