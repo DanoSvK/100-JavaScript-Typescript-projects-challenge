@@ -17,10 +17,24 @@ const saveItemsToStorage = (): void => {
 };
 
 // Decided to create local storage fro budget, as setting a budget and reloading the page will not save it (as its triggered only by adding item)
-const saveBudgetToStorage = (): void => {
-  localStorage.setItem("budget", JSON.stringify(budget));
+const saveAMountsToStorage = (): void => {
+  localStorage.setItem("amounts", JSON.stringify(allAmounts));
 };
 
+interface Amounts {
+  budget: number;
+  expenses: number;
+  balance: number;
+}
+
+const Amounts: Amounts = {
+  budget: budget,
+  expenses: expenses,
+  balance: balance,
+};
+const allAmounts: Amounts[] = JSON.parse(
+  localStorage.getItem("amounts") || "[]"
+);
 // Handling budget
 setBudgetBtn.addEventListener("click", () => {
   const budgetInput = document.querySelector("#budget") as HTMLInputElement;
@@ -34,8 +48,12 @@ setBudgetBtn.addEventListener("click", () => {
   balance = +budgetInput.value - expenses;
   totalBalance.textContent = `${(budget - expenses).toFixed(2)}€`;
 
-  saveBudgetToStorage();
   budgetInput.value = "";
+  Amounts.budget = budget;
+  Amounts.balance = balance;
+  Amounts.expenses = expenses;
+  allAmounts[0] = { ...Amounts };
+  saveAMountsToStorage();
 });
 
 // Handling items
@@ -43,10 +61,8 @@ interface Item {
   text: string;
   value: number;
   id: number;
-  budget: number;
-  expenses: number;
-  balance: number;
 }
+
 const allItems: Item[] = JSON.parse(localStorage.getItem("items") || "[]");
 
 createItemBtn.addEventListener("click", (e: Event) => {
@@ -70,9 +86,6 @@ createItemBtn.addEventListener("click", (e: Event) => {
     text: itemName,
     value: amount,
     id: Date.now(),
-    budget: budget,
-    balance: balance,
-    expenses: expenses,
   };
 
   // Create item and save to local storage
@@ -82,6 +95,11 @@ createItemBtn.addEventListener("click", (e: Event) => {
 
   itemNameInput.value = "";
   itemValueInput.value = "";
+  Amounts.balance = balance;
+  Amounts.expenses = expenses;
+  Amounts.budget = budget;
+  allAmounts[0] = { ...Amounts };
+  saveAMountsToStorage();
 });
 
 const createItem = (item: Item) => {
@@ -111,15 +129,27 @@ const createItem = (item: Item) => {
 
 // Deleting items
 mainListContainer.addEventListener("click", (e: Event) => {
+  console.log(budget);
   const target = e.target as HTMLButtonElement;
   const isDeleteBtn = target.classList.contains("delete");
   if (isDeleteBtn) {
+    console.log(budget);
     const item = target.closest(".item") as HTMLDivElement;
     const itemId = item.dataset.id;
     const index = allItems.map((item) => item.id).indexOf(Number(itemId));
 
-    balance += allItems[index].expenses;
-    expenses -= allItems[index].expenses;
+    const itemValueElement = item.querySelector(".item-value") as HTMLParagraphElement; // prettier-ignore
+    const valueOfItemText = itemValueElement.textContent;
+    const valueOfItem = Number(valueOfItemText);
+
+    balance += valueOfItem;
+    expenses -= valueOfItem;
+
+    Amounts.balance = balance;
+    Amounts.expenses = expenses;
+    Amounts.budget = budget;
+    allAmounts[0] = { ...Amounts };
+    saveAMountsToStorage();
 
     totalExpenses.textContent = `${expenses.toFixed(2)}€`;
     totalBalance.textContent = `${(budget - expenses).toFixed(2)}€`;
@@ -127,26 +157,32 @@ mainListContainer.addEventListener("click", (e: Event) => {
     allItems.splice(index, 1);
     item.remove();
     saveItemsToStorage();
+    console.log(budget);
   }
 });
 
 window.addEventListener("load", () => {
   // Fetching budget from its local storage
-  const storedBudget = JSON.parse(localStorage.getItem("budget") || "0");
-  budget = storedBudget;
+  // const storedBudget = JSON.parse(localStorage.getItem("budget") || "0");
+  // budget = storedBudget;
   allItems.forEach((item) => {
     createItem(item);
-    // Setting budget inside NewItem object to the value of the budget
-    item.budget = budget;
-
-    // Updating variables from local storage so they are not 0 (as declared at the beginning of the code)
-    budget = item.budget;
-    expenses = item.budget - item.expenses;
-    balance = item.balance;
   });
-  totalBudget.textContent = `${storedBudget.toFixed(2)}€`;
+
+  balance = allAmounts[0].balance;
+  budget = allAmounts[0].budget;
+  expenses = allAmounts[0].expenses;
+
+  //Setting budget inside NewItem object to the value of the budget
+  // item.budget = budget;
+
+  // // Updating variables from local storage so they are not 0 (as declared at the beginning of the code)
+  // budget = item.budget;
+  // expenses = item.budget - item.expenses;
+  // balance = item.balance;
+  totalBudget.textContent = `${budget.toFixed(2)}€`;
   totalExpenses.textContent = `${expenses.toFixed(2)}€`;
   totalBalance.textContent = `${(budget - expenses).toFixed(2)}€`;
 
-  saveBudgetToStorage();
+  saveAMountsToStorage();
 });
