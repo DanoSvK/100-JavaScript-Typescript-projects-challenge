@@ -5,22 +5,29 @@ const setBudgetBtn = document.querySelector('.budget-btn') as HTMLButtonElement;
 const totalBalance = document.querySelector('.overview-container__balance__value') as HTMLParagraphElement; // prettier-ignore
 const totalExpenses = document.querySelector('.overview-container__expenses__value') as HTMLParagraphElement; // prettier-ignore
 const totalBudget = document.querySelector('.overview-container__total-budget__value') as HTMLParagraphElement; // prettier-ignore
+const itemNameInput = document.querySelector(".expenses-title") as HTMLInputElement; // prettier-ignore
+const itemValueInput = document.querySelector(".expenses-amount") as HTMLInputElement; // prettier-ignore
 
-// Variables for dynamic calculations and local storage
+// Handling variables
 let budget: number = 0;
 let balance: number = 0;
 let expenses: number = 0;
-
-// Handling storage
+let isToEdit = false;
+// Handling storages
 const saveItemsToStorage = (): void => {
   localStorage.setItem("items", JSON.stringify(allItems));
 };
 
-// Decided to create local storage fro budget, as setting a budget and reloading the page will not save it (as its triggered only by adding item)
+// Needed, as it would be saved only on adding item
 const saveAMountsToStorage = (): void => {
+  Amounts.balance = balance;
+  Amounts.expenses = expenses;
+  Amounts.budget = budget;
+  allAmounts[0] = { ...Amounts };
   localStorage.setItem("amounts", JSON.stringify(allAmounts));
 };
 
+// Handlig Amounts object
 interface Amounts {
   budget: number;
   expenses: number;
@@ -32,31 +39,30 @@ const Amounts: Amounts = {
   expenses: expenses,
   balance: balance,
 };
+
 const allAmounts: Amounts[] = JSON.parse(
   localStorage.getItem("amounts") || "[]"
 );
+
 // Handling budget
 setBudgetBtn.addEventListener("click", () => {
   const budgetInput = document.querySelector("#budget") as HTMLInputElement;
 
-  // Get value from budget input, save as a variable and display it
+  // Get value from budget input, save udpate the variable, and display it
   const budgetValue = +budgetInput.value;
   budget = budgetValue;
   totalBudget.textContent = `${budget.toFixed(2)}€`;
 
-  // Update the balance amount (by decrementing it by expenses) in case a new budget is added with already existing expenses, save to variable and display it
+  // Update also the balance amount (by decrementing it by expenses) in case a new budget is added with already existing expenses, update the variable variable, and display it
   balance = +budgetInput.value - expenses;
   totalBalance.textContent = `${(budget - expenses).toFixed(2)}€`;
 
   budgetInput.value = "";
-  Amounts.budget = budget;
-  Amounts.balance = balance;
-  Amounts.expenses = expenses;
-  allAmounts[0] = { ...Amounts };
+
   saveAMountsToStorage();
 });
 
-// Handling items
+// Handling Item object
 interface Item {
   text: string;
   value: number;
@@ -65,15 +71,17 @@ interface Item {
 
 const allItems: Item[] = JSON.parse(localStorage.getItem("items") || "[]");
 
+// Saves local storage, if isToEdit is true, saving local storage (in case edit item button was clicked which leads to removing it only from array without saving to local storage).
 createItemBtn.addEventListener("click", (e: Event) => {
+  // If isToEdit is true,
+  if (isToEdit == true) {
+    saveItemsToStorage();
+  }
   e.preventDefault();
-
-  const itemNameInput = document.querySelector(".expenses-title") as HTMLInputElement; // prettier-ignore
-  const itemValueInput = document.querySelector(".expenses-amount") as HTMLInputElement; // prettier-ignore
 
   const itemName = itemNameInput.value;
   const amount = +itemValueInput.value;
-
+  if (itemName.trim() == "" || !amount || amount < 1) return;
   // Get value from expenses input and display it
   expenses += amount;
   totalExpenses.textContent = `${expenses.toFixed(2)}€`;
@@ -95,11 +103,9 @@ createItemBtn.addEventListener("click", (e: Event) => {
 
   itemNameInput.value = "";
   itemValueInput.value = "";
-  Amounts.balance = balance;
-  Amounts.expenses = expenses;
-  Amounts.budget = budget;
-  allAmounts[0] = { ...Amounts };
+
   saveAMountsToStorage();
+  isToEdit = false;
 });
 
 const createItem = (item: Item) => {
@@ -115,56 +121,71 @@ const createItem = (item: Item) => {
 
   const itemValue = document.createElement("p");
   itemValue.classList.add("item-value");
-  itemValue.textContent = `${item.value}`;
+  itemValue.textContent = `${item.value}€`;
   listGridContainer.appendChild(itemValue);
 
-  const editButton = document.createElement("button");
-  editButton.classList.add("fa-solid", "fa-pen-to-square", "edit");
-  listGridContainer.appendChild(editButton);
+  const editBtn = document.createElement("button");
+  editBtn.classList.add("fa-solid", "fa-pen-to-square", "edit");
+  listGridContainer.appendChild(editBtn);
 
-  const deleteButton = document.createElement("button");
-  deleteButton.classList.add("fa-solid", "fa-trash-can", "delete");
-  listGridContainer.appendChild(deleteButton);
+  const deleteBtn = document.createElement("button");
+  deleteBtn.classList.add("fa-solid", "fa-trash-can", "delete");
+  listGridContainer.appendChild(deleteBtn);
+};
+
+// Getting, calculating, displaying values and deleting the specific item upon edit/delete
+const getItem = (target: HTMLButtonElement): void => {
+  const item = target.closest(".item") as HTMLDivElement;
+  const itemId = item.dataset.id;
+  const index = allItems.map((item) => item.id).indexOf(Number(itemId));
+
+  const itemValueElement = item.querySelector(".item-value") as HTMLParagraphElement; // prettier-ignore
+  const itemNameElement = item.querySelector(".item-name") as HTMLParagraphElement; // prettier-ignore
+  const valueOfItemText = itemValueElement.textContent;
+  const valueOfItem = Number(valueOfItemText?.replace("€", "") || "0");
+
+  balance += valueOfItem;
+  expenses -= valueOfItem;
+
+  totalExpenses.textContent = `${expenses.toFixed(2)}€`;
+  totalBalance.textContent = `${(budget - expenses).toFixed(2)}€`;
+
+  allItems.splice(index, 1);
+  item.remove();
+  if (target.classList.contains("edit")) {
+    console.log(valueOfItemText);
+    itemNameInput.value = itemNameElement.textContent || "0";
+    itemValueInput.value = valueOfItemText?.replace("€", "") || "0";
+  }
 };
 
 // Deleting items
 mainListContainer.addEventListener("click", (e: Event) => {
-  console.log(budget);
   const target = e.target as HTMLButtonElement;
   const isDeleteBtn = target.classList.contains("delete");
+
   if (isDeleteBtn) {
-    console.log(budget);
-    const item = target.closest(".item") as HTMLDivElement;
-    const itemId = item.dataset.id;
-    const index = allItems.map((item) => item.id).indexOf(Number(itemId));
+    getItem(target);
 
-    const itemValueElement = item.querySelector(".item-value") as HTMLParagraphElement; // prettier-ignore
-    const valueOfItemText = itemValueElement.textContent;
-    const valueOfItem = Number(valueOfItemText);
-
-    balance += valueOfItem;
-    expenses -= valueOfItem;
-
-    Amounts.balance = balance;
-    Amounts.expenses = expenses;
-    Amounts.budget = budget;
-    allAmounts[0] = { ...Amounts };
     saveAMountsToStorage();
-
-    totalExpenses.textContent = `${expenses.toFixed(2)}€`;
-    totalBalance.textContent = `${(budget - expenses).toFixed(2)}€`;
-
-    allItems.splice(index, 1);
-    item.remove();
     saveItemsToStorage();
-    console.log(budget);
+  }
+});
+
+// Editing items
+/* Item gets deleted from UI and from arrasy, but cahgne is not saved into local storage
+Instead, isToEdit is set to true and upon adding another item the local storage is saved (handled in createItemBtn),
+removing the item from local storage and only one item would be added */
+mainListContainer.addEventListener("click", (e: Event) => {
+  const target = e.target as HTMLButtonElement;
+  const isEditBtn = target.classList.contains("edit");
+  if (isEditBtn) {
+    getItem(target);
+    isToEdit = true;
   }
 });
 
 window.addEventListener("load", () => {
-  // Fetching budget from its local storage
-  // const storedBudget = JSON.parse(localStorage.getItem("budget") || "0");
-  // budget = storedBudget;
   allItems.forEach((item) => {
     createItem(item);
   });
@@ -173,13 +194,6 @@ window.addEventListener("load", () => {
   budget = allAmounts[0].budget;
   expenses = allAmounts[0].expenses;
 
-  //Setting budget inside NewItem object to the value of the budget
-  // item.budget = budget;
-
-  // // Updating variables from local storage so they are not 0 (as declared at the beginning of the code)
-  // budget = item.budget;
-  // expenses = item.budget - item.expenses;
-  // balance = item.balance;
   totalBudget.textContent = `${budget.toFixed(2)}€`;
   totalExpenses.textContent = `${expenses.toFixed(2)}€`;
   totalBalance.textContent = `${(budget - expenses).toFixed(2)}€`;
