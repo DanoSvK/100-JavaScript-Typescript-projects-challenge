@@ -1,0 +1,61 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  height: 100svh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #5256ad;
+  padding: 30px;
+  font-family: "Poppins", sans-serif;
+}
+
+.app {
+  width: clamp(300px, 300px, 350px);
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  gap: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+}
+
+textarea {
+  resize: none;
+}
+
+.app :where(textarea, select) {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 8px;
+}
+
+.text,
+.voice {
+  display: flex;
+  flex-direction: column;
+}
+
+select::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 8px;
+  border-right: 2px solid #fff;
+}
+
+.convert-btn {
+  border: none;
+  border-radius: 5px;
+  color: #ffffff;
+  background-color: #5256ad;
+  padding: 15px 25px;
+}
