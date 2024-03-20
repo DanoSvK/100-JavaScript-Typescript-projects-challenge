@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="stylesheet" href="./style.css" />
+    <script defer src="./script.js"></script>
+    <title>Gradient Generator</title>
+  </head>
+  <body>
+    <section class="container">
+      <div class="colors">
+        <div class="color-pick">
+          <input
+            type="color"
+            name="left-color"
+            class="left-color"
+            value="#7986cb" />
+        </div>
+        <div class="color-pick">
+          <input
+            type="color"
+            name="right-color"
+            class="right-color"
+            value="#1a237e" />
+        </div>
+      </div>
+      <div class="direction-buttons">
+        <button class="direction-btn active" data-direction="to top">
+          <i class="fas fa-arrow-up"></i></button
+        ><button class="direction-btn" data-direction="to bottom">
+          <i class="fas fa-arrow-down"></i></button
+        ><button class="direction-btn" data-direction="to right">
+          <i class="fas fa-arrow-right"></i></button
+        ><button class="direction-btn" data-direction="to left">
+          <i class="fas fa-arrow-left"></i></button
+        ><button
+          class="direction-btn rotate-icon"
+          data-direction="to top right">
+          <i class="fas fa-arrow-up"></i></button
+        ><button
+          class="direction-btn rotate-icon"
+          data-direction="to bottom left">
+          <i class="fas fa-arrow-down"></i></button
+        ><button
+          class="direction-btn rotate-icon"
+          data-direction="to bottom right">
+          <i class="fas fa-arrow-right"></i></button
+        ><button class="direction-btn rotate-icon" data-direction="to top left">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+      </div>
+      <button class="generate-btn">Generate</button>
+      <div class="text">
+        <textarea
+          name="text"
+          id="text"
+          cols="30"
+          rows="2"
+          readonly="true"></textarea>
+        <div class="copy-wrapper">
+          <p class="copy-msg">Copied to clipboard</p>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
