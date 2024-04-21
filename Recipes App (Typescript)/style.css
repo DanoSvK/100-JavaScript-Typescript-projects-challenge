@@ -1,0 +1,149 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+  font-size: 1rem;
+}
+
+body {
+  position: relative;
+  height: 100svh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(#1c1917 50%, #ffb92a 50%);
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+}
+
+.close-btn {
+  position: absolute;
+  background-color: #ffb92a;
+  top: 10px;
+  right: 10px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.recipe-detail {
+  display: none;
+  position: absolute;
+  top: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+  background-color: #1e293b;
+  border-radius: 10px;
+  padding: 35px 20px 20px;
+  width: 90vw;
+  max-width: 450px;
+  color: #fff;
+}
+
+.container {
+  position: relative;
+  display: flex;
+  min-height: 100px;
+}
+
+.search-form {
+  position: absolute;
+  display: flex;
+  gap: 20px;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  padding: 20px;
+}
+
+input {
+  width: 100%;
+  background: none;
+  outline: none;
+  border: 1px solid #fff;
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.recipe {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: #1e293b;
+  border-radius: 10px;
+  padding: 35px 20px 20px;
+  width: 90vw;
+  max-width: 512px;
+  justify-content: center;
+}
+
+.header {
+  border-radius: 5px;
+  background-color: #ffb92a;
+  text-align: center;
+  padding: 6px;
+}
+
+img {
+  width: 150px;
+  height: 150px;
+  margin: 0 auto;
+}
+
+.ingredients {
+  color: #fff;
+}
+
+.ingredients-header {
+  text-align: center;
+  padding-bottom: 15px;
+}
+
+.ingredients-list {
+  display: grid;
+  grid-template-columns: auto auto;
+  color: #ccc;
+  gap: 10px 20px;
+}
+
+ul {
+  list-style-position: outside;
+  margin-left: 15px;
+}
+
+.ingredients li {
+  list-style: square;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: end;
+}
+
+.btn {
+  outline: none;
+  border: none;
+  background-color: #ffb92a;
+  padding: 8px 12px;
+  border-radius: 5px;
+  text-align: right;
+  justify-self: end;
+  cursor: pointer;
+}
