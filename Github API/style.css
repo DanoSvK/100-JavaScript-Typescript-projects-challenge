@@ -31,12 +31,12 @@ body {
 input,
 .search-btn {
   position: absolute;
+  top: 50%;
 }
 
 input {
-  top: 50%;
+  left: 10px;
   transform: translateY(-50%);
-  left: 5px;
   border: none;
   outline: none;
   background: none;
@@ -45,9 +45,8 @@ input {
 }
 
 .search-btn {
-  top: 50%;
+  right: 10px;
   transform: translateY(-50%);
-  right: 5px;
   background: #675afe;
   border: none;
   padding: 5px 10px;
@@ -60,7 +59,7 @@ input {
 }
 
 .card {
-  display: flex;
+  display: none;
   gap: 15px;
   margin-top: 15px;
   background-color: #161922;
@@ -93,8 +92,8 @@ img {
   border-radius: 5px;
 }
 
-.smth {
-  display: flex;
-  flex-wrap: wrap;
+.more-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
