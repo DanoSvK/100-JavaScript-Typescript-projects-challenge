@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Music Player</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./style.css" />
+    <script defer src="script.js"></script>
+  </head>
+  <body>
+    <section class="player">
+      <div class="image"></div>
+      <div class="detail">
+        <div class="song-detail">
+          <h3 class="title">Name of the song</h3>
+          <p class="interpret">Interpret</p>
+        </div>
+        <div class="player-detail">
+          <!-- <div class="progress-bar">
+            <div class="completed"></div>
+          </div> -->
+          <input
+            type="range"
+            id="timeControl"
+            min="0"
+            max="100"
+            step="1"
+            value="0" />
+          <audio id="audioPlayer">
+            <source
+              src="./Cardi B - Motion ft. Latto & Sexyy Red (Music Video).mp3"
+              type="audio/mpeg" />
+            Your browser does not support the audio element.
+          </audio>
+          <div class="player-controls">
+            <div class="player-controls__buttons">
+              <i class="fa-solid fa-backward-step"></i>
+              <i class="fa-solid fa-backward"></i>
+              <i class="fa-solid fa-play btn-play"></i>
+              <i class="fa-solid fa-forward"></i>
+              <i class="fa-solid fa-forward-step"></i>
+            </div>
+            <!-- <div class="player-controls__volume">
+              <label for="volumeControl">Volume: </label>
+              <input
+                type="range"
+                id="volumeControl"
+                min="0"
+                max="1"
+                step="0.1"
+                value="1" />
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
