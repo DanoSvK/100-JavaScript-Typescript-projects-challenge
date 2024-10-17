@@ -19,42 +19,40 @@
       <div class="image"></div>
       <div class="detail">
         <div class="song-detail">
-          <h3 class="title">Name of the song</h3>
-          <p class="interpret">Interpret</p>
+          <h3 class="title"></h3>
+          <p class="author"></p>
         </div>
         <div class="player-detail">
-          <!-- <div class="progress-bar">
-            <div class="completed"></div>
-          </div> -->
+          <div class="time">
+            <p class="currTime"></p>
+            <p class="totalTime"></p>
+          </div>
           <input
             type="range"
             id="timeControl"
             min="0"
             max="100"
             step="1"
-            value="0" />
+            value="0"
+            aria-label="Time control" />
           <audio id="audioPlayer">
             <source src="" type="audio/mpeg" />
             Your browser does not support the audio element.
           </audio>
           <div class="player-controls">
             <div class="player-controls__buttons">
-              <i class="fa-solid fa-backward-step"></i>
-              <i class="fa-solid fa-backward"></i>
-              <i class="fa-solid fa-play btn-play"></i>
-              <i class="fa-solid fa-forward"></i>
-              <i class="fa-solid fa-forward-step"></i>
+              <i
+                class="fa-solid fa-backward-step"
+                aria-label="Previous song"></i>
+              <i
+                class="fa-solid fa-backward"
+                aria-label="Skip time backward"></i>
+              <i
+                class="fa-solid fa-play btn-play"
+                aria-label="Play or Pause"></i>
+              <i class="fa-solid fa-forward" aria-label="Skip time forward"></i>
+              <i class="fa-solid fa-forward-step" aria-label="Next song"></i>
             </div>
-            <!-- <div class="player-controls__volume">
-              <label for="volumeControl">Volume: </label>
-              <input
-                type="range"
-                id="volumeControl"
-                min="0"
-                max="1"
-                step="0.1"
-                value="1" />
-            </div> -->
           </div>
         </div>
       </div>
