@@ -10,7 +10,7 @@ const isAPIKeyProvided = () => {
   } else if (templateConfig.apiKey != "YOUR_API_KEY_HERE") {
     apiKey = templateConfig.apiKey;
   } else {
-    console.log("No API key provded");
+    console.error("No API key provided");
   }
 };
 isAPIKeyProvided();
@@ -25,9 +25,9 @@ const currTempValueEl = document.querySelector(".current-forecast__temp");
 const currWeatherTypeEL = document.querySelector(".current-forecast__weather");
 const errorMsg = document.querySelector(".error-message");
 const btn = document.querySelector("button");
+const searchCitySubmit = document.querySelector(".search-bar");
+const searchCityValue = document.querySelector(".search-input");
 const dailyForecastEl = document.querySelector("daily-forecast");
-
-let city = document.querySelector("input");
 
 class WeatherApp {
   lat;
@@ -35,9 +35,11 @@ class WeatherApp {
 
   constructor() {
     this.myLocation();
-    btn.addEventListener("click", () => {
-      this.searchCurrentWeather(city.value);
-      this.searchThreeHourForecast(city.value);
+    searchCitySubmit.addEventListener("submit", (e) => {
+      e.preventDefault();
+      +this.searchCurrentWeather(searchCityValue.value);
+      this.searchThreeHourForecast(searchCityValue.value);
+      searchCityValue.value = "";
     });
     dailyForecast.addEventListener("click", (e) => {
       this.testFn(e);
@@ -111,13 +113,33 @@ class WeatherApp {
   loadFiveDaysForecast = async (lat, lon) => {
     try {
       // Get data
-      const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,hourly,minutely,alerts&units=metric&appid=${apiKey}`;
+      const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&exclude=minutely,hourly&appid=${apiKey}`;
       const data = await fetchURL(url);
-      console.log(data);
+
       // Render markup
       let html;
-      data.daily.map((_, i) => {
-        html = this.sevenDaysForecast(data.daily[i]);
+      const days = {
+        0: [], // Sunday
+        1: [], // Monday
+        2: [], // Tuesday
+        3: [], // Wednesday
+        4: [], // Thursday
+        5: [], // Friday
+        6: [], // Saturday
+      };
+
+      data.list.map((_, i) => {
+        const date = new Date(data.list[i].dt_txt);
+        const day = date.getDay();
+        console.log(day);
+        const now = new Date("");
+        const today = now.getDay();
+
+        days[day].push(data.list);
+      });
+
+      data.list.map((_, i) => {
+        html = this.fiveDaysForecast(data.list[i]);
         dailyForecast.insertAdjacentHTML("beforeend", html);
       });
     } catch {
@@ -126,10 +148,10 @@ class WeatherApp {
   };
 
   // Load data on search functions
-  searchCurrentWeather = async (city) => {
+  searchCurrentWeather = async (searchCityValue) => {
     try {
       // Get data
-      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${searchCityValue}&appid=${apiKey}`;
       const data = await fetchURL(url);
 
       // Render error message
@@ -145,10 +167,12 @@ class WeatherApp {
       // Openweather API does not provied 7 days forecast API based on city search and I wanted to avoid using reverse geocoding API.
       // I decided to coords from current weather API and save globally inside the class.
       // To save the coords and use them in the function before the function is called, it was neccessary to call the function from inside this function.
+
       const { lat, lon } = data.coord;
       this.lat = lat;
       this.lon = lon;
-      this.searchSevenDaysForecast();
+
+      this.searchFiveDaysForecast();
     } catch (err) {
       console.error(err);
       errorMsg.classList.add("active");
@@ -158,10 +182,10 @@ class WeatherApp {
     }
   };
 
-  searchThreeHourForecast = async (city) => {
+  searchThreeHourForecast = async (searchCityValue) => {
     try {
       // Get data
-      const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`;
+      const url = `https://api.openweathermap.org/data/2.5/forecast?q=${searchCityValue}&appid=${apiKey}`;
       const data = await fetchURL(url);
 
       // Render error message
@@ -184,12 +208,12 @@ class WeatherApp {
     }
   };
 
-  searchSevenDaysForecast = async () => {
+  searchFiveDaysForecast = async () => {
     try {
       // Get data
-      const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${this.lat}&lon=${this.lon}&exclude=current,hourly,minutely,alerts&units=metric&appid=${apiKey}`;
+      const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${this.lat}&lon=${this.lon}&exclude=minutely,hourly&appid=${apiKey}`;
       const data = await fetchURL(url);
-      console.log(data);
+
       // Render error message
       if (!data)
         // prettier-ignore
@@ -198,8 +222,8 @@ class WeatherApp {
       // Render markup
       let html;
       dailyForecast.innerHTML = "";
-      data.daily.map((_, i) => {
-        html = this.sevenDaysForecast(data.daily[i]);
+      data.list.map((_, i) => {
+        html = this.fiveDaysForecast(data.list[i]);
         dailyForecast.insertAdjacentHTML("beforeend", html);
       });
     } catch (err) {
@@ -223,7 +247,7 @@ class WeatherApp {
     </div>`;
   };
 
-  sevenDaysForecast = (arr) => {
+  fiveDaysForecast = (arr) => {
     const day = getDay(arr);
     return `
     <tr class="daily-forecast__item">
@@ -232,7 +256,7 @@ class WeatherApp {
             arr.weather[0].icon
           }.png" alt="weather type icon" alt="" /></td>
           <td><div class="daily-forecast__wind">
-          <p>${arr.wind_speed}m/s</p>
+          <p>${arr.wind.speed}m/s</p>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="30"
@@ -240,7 +264,7 @@ class WeatherApp {
                 viewBox="0 96 960 960"
                 fill="#ffffff"
                 style="transform: rotate(${
-                  arr.wind_deg
+                  arr.wind.deg
                 }deg); transform-origin: center"
               >
                 <path
@@ -249,16 +273,16 @@ class WeatherApp {
               </svg>
             </div></td>
             <td><div class="daily-forecast__temps">
-          <p class="temp-high">${Math.round(arr.temp.max)}°C</p>
-          <p class="temp-low">${Math.round(arr.temp.min)}°C</p>
+          <p class="temp-high">${Math.round(arr.main.temp_max)}°C</p>
+          <p class="temp-low">${Math.round(arr.main.temp_min)}°C</p>
           </div></td>
           <div class="last-item"><p>The weather today is mainly ${
             arr.weather[0].description
           } with max temperature of ${Math.round(
-      arr.temp.max
+      arr.main.temp_max
     )}°C and lowest temperature of ${Math.round(
-      arr.temp.min
-    )}°C. You can expect wind speed of ${arr.wind_speed} m/s.</p></div>
+      arr.main.temp_min
+    )}°C. You can expect wind speed of ${arr.wind.speed} m/s.</p></div>
         </tr>`;
   };
 }
