@@ -1,7 +1,7 @@
 import config from "./config.js";
 import templateConfig from "./config.template.js";
 // prettier-ignore
-import { fetchURL, kelvinToCelsius, getHours, getMinutes, getDay } from "./helperFunctions.js";
+import { fetchURL, kelvinToCelsius, getHours, getMinutes, getDay, calculateAndRenderFiveDaysForecastData } from "./helperFunctions.js";
 // Check if API key is provided. If not, error is displayed
 let apiKey;
 const isAPIKeyProvided = () => {
@@ -120,114 +120,9 @@ class WeatherApp {
       // Render markup
       let html;
 
-      //After changes to endpoint, I had to work with 5 days 3 hours forecast, meaning I had to split days and calculate average values for each day.
-
-      // Empty object
-      const days = {};
-
-      //Iterate over API data
-      data.list.map((_, i) => {
-        // Get number of day from each iteration using date from the API data
-        const date = new Date(data.list[i].dt_txt);
-        const day = date.getDay();
-
-        // Get number of today's day
-        const now = new Date();
-        const today = now.getDay();
-
-        // Check if day is not today
-        if (day != today) {
-          // Check if such keyname already exists to avoid duplication (as its 3 hours forecast, so 8 items in array for each day are coming from the API)
-          if (!days[day]) {
-            // If not, initialize an empty array for this day
-            days[day] = [];
-          }
-
-          // Push all the 3 hours forecast items of each day into respective day of my days object
-          days[day].push(data.list[i]);
-        }
-      });
-
-      /* As I will need to calulate averages to show the most reliable single point weather detail per each day (I want to show singular data for each day), 
-      I created object that will keep the calcualted data and will be used to render template*/
-      const fiveDaysForecast = [
-        {
-          timestamp: 0,
-          icon: "",
-          wind_speed: 0,
-          wind_deg: 0,
-          temp_max: 0,
-          temp_min: 0,
-          description: "",
-        },
-        {
-          timestamp: 0,
-          icon: "",
-          wind_speed: 0,
-          wind_deg: 0,
-          temp_max: 0,
-          temp_min: 0,
-          description: "",
-        },
-        {
-          timestamp: 0,
-          icon: "",
-          wind_speed: 0,
-          wind_deg: 0,
-          temp_max: 0,
-          temp_min: 0,
-          description: "",
-        },
-        {
-          timestamp: 0,
-          icon: "",
-          wind_speed: 0,
-          wind_deg: 0,
-          temp_max: 0,
-          temp_min: 0,
-          description: "",
-        },
-        {
-          timestamp: 0,
-          icon: "",
-          wind_speed: 0,
-          wind_deg: 0,
-          temp_max: 0,
-          temp_min: 0,
-          description: "",
-        },
-      ];
-
-      // Iterate over days object
-      for (let i in days) {
-        // Iterate over each array of each days object key and in each iteration I save calculated averages into the fiveDaysForecast object
-        for (let j = 0; j < days[i].length; j++) {
-          fiveDaysForecast[i - 1].temp_max += Math.round(
-            days[i][j].main.temp_max / days[i].length
-          );
-
-          fiveDaysForecast[i - 1].temp_min += Math.round(
-            days[i][j].main.temp_min / days[i].length
-          );
-
-          fiveDaysForecast[i - 1].wind_speed +=
-            days[i][j].wind.speed / days[i].length;
-
-          fiveDaysForecast[i - 1].wind_deg +=
-            days[i][j].wind.deg / days[i].length;
-        }
-
-        /* Description and icon were more difficult, 
-        I was thikning about creating a counter (most common occurences would be saved, maybe categorzied even by priority), 
-        but decided to not complicate too much and went for middle of the day description and icon */
-        fiveDaysForecast[i - 1].description = days[i][0].weather[0].description;
-        fiveDaysForecast[i - 1].icon = days[i][0].weather[0].icon;
-        //Save timestamp for getDay() helper function
-        fiveDaysForecast[i - 1].timestamp = days[i][0].dt;
-      }
-
-      for (let i in fiveDaysForecast) {
-        html = this.fiveDaysForecast(fiveDaysForecast[i]);
+      const test = calculateAndRenderFiveDaysForecastData(data);
+      for (let i in test) {
+        html = this.fiveDaysForecast(test[i]);
         dailyForecast.insertAdjacentHTML("beforeend", html);
       }
     } catch {
@@ -308,12 +203,18 @@ class WeatherApp {
         throw new Error(`Could not retrieve any data. Please, enter a correct city name!`);
 
       // Render markup
-      let html;
       dailyForecast.innerHTML = "";
-      data.list.map((_, i) => {
-        html = this.fiveDaysForecast(data.list[i]);
+      let html;
+      // Empty object
+      const test = calculateAndRenderFiveDaysForecastData(data);
+      for (let i in test) {
+        html = this.fiveDaysForecast(test[i]);
         dailyForecast.insertAdjacentHTML("beforeend", html);
-      });
+      }
+      // for (let i in this.fiveDaysForecastData) {
+      //   html = this.fiveDaysForecast(this.fiveDaysForecastData[i]);
+      //   dailyForecast.insertAdjacentHTML("beforeend", html);
+      // }
     } catch (err) {
       console.error(err);
       errorMsg.classList.add("active");
