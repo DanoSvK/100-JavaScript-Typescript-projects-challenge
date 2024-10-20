@@ -21,11 +21,11 @@ export const getDay = (data) => {
   if (new Date(data.dt * 1000).getDay() == new Date(Date.now()).getDay()) {
     return "Today";
   } else if (
-    new Date(data.dt * 1000).getDay() ==
+    new Date(data.timestamp * 1000).getDay() ==
     new Date(Date.now()).getDay() + 1
   ) {
     return "Tomorrow";
   } else {
-    return days[new Date(data.dt * 1000).getDay()];
+    return days[new Date(data.timestamp * 1000).getDay()];
   }
 };
