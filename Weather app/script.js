@@ -110,38 +110,126 @@ class WeatherApp {
     }
   };
 
+  // In this function, I will be more descriptive, as changes wmust have been made due to changes in API endpoints of Open weather map, which made some things more complicated
   loadFiveDaysForecast = async (lat, lon) => {
     try {
       // Get data
       const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&exclude=minutely,hourly&appid=${apiKey}`;
       const data = await fetchURL(url);
-
+      if (!data) throw new Error("Error");
       // Render markup
       let html;
-      const days = {
-        0: [], // Sunday
-        1: [], // Monday
-        2: [], // Tuesday
-        3: [], // Wednesday
-        4: [], // Thursday
-        5: [], // Friday
-        6: [], // Saturday
-      };
 
+      //After changes to endpoint, I had to work with 5 days 3 hours forecast, meaning I had to split days and calculate average values for each day.
+
+      // Empty object
+      const days = {};
+
+      //Iterate over API data
       data.list.map((_, i) => {
+        // Get number of day from each iteration using date from the API data
         const date = new Date(data.list[i].dt_txt);
         const day = date.getDay();
-        console.log(day);
-        const now = new Date("");
+
+        // Get number of today's day
+        const now = new Date();
         const today = now.getDay();
 
-        days[day].push(data.list);
+        // Check if day is not today
+        if (day != today) {
+          // Check if such keyname already exists to avoid duplication (as its 3 hours forecast, so 8 items in array for each day are coming from the API)
+          if (!days[day]) {
+            // If not, initialize an empty array for this day
+            days[day] = [];
+          }
+
+          // Push all the 3 hours forecast items of each day into respective day of my days object
+          days[day].push(data.list[i]);
+        }
       });
 
-      data.list.map((_, i) => {
-        html = this.fiveDaysForecast(data.list[i]);
+      /* As I will need to calulate averages to show the most reliable single point weather detail per each day (I want to show singular data for each day), 
+      I created object that will keep the calcualted data and will be used to render template*/
+      const fiveDaysForecast = [
+        {
+          timestamp: 0,
+          icon: "",
+          wind_speed: 0,
+          wind_deg: 0,
+          temp_max: 0,
+          temp_min: 0,
+          description: "",
+        },
+        {
+          timestamp: 0,
+          icon: "",
+          wind_speed: 0,
+          wind_deg: 0,
+          temp_max: 0,
+          temp_min: 0,
+          description: "",
+        },
+        {
+          timestamp: 0,
+          icon: "",
+          wind_speed: 0,
+          wind_deg: 0,
+          temp_max: 0,
+          temp_min: 0,
+          description: "",
+        },
+        {
+          timestamp: 0,
+          icon: "",
+          wind_speed: 0,
+          wind_deg: 0,
+          temp_max: 0,
+          temp_min: 0,
+          description: "",
+        },
+        {
+          timestamp: 0,
+          icon: "",
+          wind_speed: 0,
+          wind_deg: 0,
+          temp_max: 0,
+          temp_min: 0,
+          description: "",
+        },
+      ];
+
+      // Iterate over days object
+      for (let i in days) {
+        // Iterate over each array of each days object key and in each iteration I save calculated averages into the fiveDaysForecast object
+        for (let j = 0; j < days[i].length; j++) {
+          fiveDaysForecast[i - 1].temp_max += Math.round(
+            days[i][j].main.temp_max / days[i].length
+          );
+
+          fiveDaysForecast[i - 1].temp_min += Math.round(
+            days[i][j].main.temp_min / days[i].length
+          );
+
+          fiveDaysForecast[i - 1].wind_speed +=
+            days[i][j].wind.speed / days[i].length;
+
+          fiveDaysForecast[i - 1].wind_deg +=
+            days[i][j].wind.deg / days[i].length;
+        }
+
+        /* Description and icon were more difficult, 
+        I was thikning about creating a counter (most common occurences would be saved, maybe categorzied even by priority), 
+        but decided to not complicate too much and went for middle of the day description and icon */
+        fiveDaysForecast[i - 1].description = days[i][0].weather[0].description;
+        fiveDaysForecast[i - 1].icon = days[i][0].weather[0].icon;
+        //Save timestamp for getDay() helper function
+        fiveDaysForecast[i - 1].timestamp = days[i][0].dt;
+      }
+
+      for (let i in fiveDaysForecast) {
+        html = this.fiveDaysForecast(fiveDaysForecast[i]);
         dailyForecast.insertAdjacentHTML("beforeend", html);
-      });
+      }
     } catch {
       console.error("Error loading current weather:", error.message);
     }
@@ -164,9 +252,9 @@ class WeatherApp {
       currTempValueEl.textContent = `${kelvinToCelsius(data)}°C`;
       currWeatherTypeEL.textContent = data.weather[0].main;
 
-      // Openweather API does not provied 7 days forecast API based on city search and I wanted to avoid using reverse geocoding API.
-      // I decided to coords from current weather API and save globally inside the class.
-      // To save the coords and use them in the function before the function is called, it was neccessary to call the function from inside this function.
+      /* Openweather API does not provied 7 days forecast API based on city search and I wanted to avoid using reverse geocoding API.
+      I decided to coords from current weather API and save globally inside the class.
+      To save the coords and use them in the function before the function is called, it was neccessary to call the function from inside this function. */
 
       const { lat, lon } = data.coord;
       this.lat = lat;
@@ -253,10 +341,10 @@ class WeatherApp {
     <tr class="daily-forecast__item">
           <td><p>${day}</p></td>
           <td><img src="https://openweathermap.org/img/wn/${
-            arr.weather[0].icon
+            arr.icon
           }.png" alt="weather type icon" alt="" /></td>
           <td><div class="daily-forecast__wind">
-          <p>${arr.wind.speed}m/s</p>
+          <p>${arr.wind_speed.toFixed(2)}m/s</p>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="30"
@@ -264,7 +352,7 @@ class WeatherApp {
                 viewBox="0 96 960 960"
                 fill="#ffffff"
                 style="transform: rotate(${
-                  arr.wind.deg
+                  arr.wind_deg
                 }deg); transform-origin: center"
               >
                 <path
@@ -273,16 +361,18 @@ class WeatherApp {
               </svg>
             </div></td>
             <td><div class="daily-forecast__temps">
-          <p class="temp-high">${Math.round(arr.main.temp_max)}°C</p>
-          <p class="temp-low">${Math.round(arr.main.temp_min)}°C</p>
+          <p class="temp-high">${Math.round(arr.temp_max)}°C</p>
+          <p class="temp-low">${Math.round(arr.temp_min)}°C</p>
           </div></td>
           <div class="last-item"><p>The weather today is mainly ${
-            arr.weather[0].description
-          } with max temperature of ${Math.round(
-      arr.main.temp_max
-    )}°C and lowest temperature of ${Math.round(
-      arr.main.temp_min
-    )}°C. You can expect wind speed of ${arr.wind.speed} m/s.</p></div>
+            arr.description
+          } with max temperature of ${
+      arr.temp_max
+    }°C and lowest temperature of ${
+      arr.temp_min
+    }°C. You can expect wind speed of ${arr.wind_speed.toFixed(
+      2
+    )} m/s.</p></div>
         </tr>`;
   };
 }
